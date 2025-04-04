@@ -2,7 +2,7 @@
 
 import { startTransition, useMemo, useOptimistic, useState } from 'react';
 
-import { models } from '@/ai/models';
+import { models } from '@/lib/ai/models';
 import { saveModelId } from '@/app/(chat)/actions';
 import { Button } from '@/components/ui/button';
 import {

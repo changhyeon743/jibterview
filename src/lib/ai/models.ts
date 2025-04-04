@@ -1,4 +1,4 @@
-// Define your models here.
+//@orchestra chat
 
 export interface Model {
   id: string;

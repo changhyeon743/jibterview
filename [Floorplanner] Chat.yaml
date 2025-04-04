@@ -1,0 +1,9 @@
+project:
+  org_uuid: abb7e47f-3cb2-43ab-b7a0-5ad67fa7f7d0
+  project_uuid: 0195ff29-c594-704c-974f-3f27b33b0387
+  project_name: '[Floorplanner] Chat'
+  directory: /Users/ichanghyeon/Desktop/floorplanner/src
+features:
+  tag: '@orchestra'
+  valid_tags:
+  - chat

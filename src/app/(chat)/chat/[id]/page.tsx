@@ -1,7 +1,8 @@
+//@orchestra chat
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 
-import { DEFAULT_MODEL_NAME, models } from '@/ai/models';
+import { DEFAULT_MODEL_NAME, models } from '@/lib/ai/models';
 import { Chat as PreviewChat } from '@/components/custom/chat';
 import {
   getChatById,

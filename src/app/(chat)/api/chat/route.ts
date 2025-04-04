@@ -8,9 +8,9 @@ import {
 } from 'ai';
 import { z } from 'zod';
 
-import { customModel } from '@/ai';
-import { models } from '@/ai/models';
-import { blocksPrompt, regularPrompt, systemPrompt } from '@/ai/prompts';
+import { customModel } from '@/lib/ai';
+import { models } from '@/lib/ai/models';
+import { blocksPrompt, regularPrompt, systemPrompt } from '@/lib/ai/prompts';
 import { getChatById, getDocumentById, getSession } from '@/db/cached-queries';
 import {
   saveChat,
