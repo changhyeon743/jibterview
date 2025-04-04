@@ -1,0 +1,490 @@
+{
+    "floorplanner": {
+        "version": "2.0.1a",
+        "corners": {
+            "71d4f128-ae80-3d58-9bd2-711c6ce6cdf2": {
+                "x": 0,
+                "y": 0,
+                "elevation": 3
+            },
+            "f90da5e3-9e0e-eba7-173d-eb0b071e838e": {
+                "x": 0,
+                "y": 5,
+                "elevation": 3
+            },
+            "da026c08-d76a-a944-8e7b-096b752da9ed": {
+                "x": 5,
+                "y": 5,
+                "elevation": 3
+            },
+            "4e3d65cb-54c0-0681-28bf-bddcc7bdb571": {
+                "x": 5,
+                "y": 0,
+                "elevation": 3
+            },
+            "fed350d6-a751-1f3d-f6ec-eaa27de6bd12": {
+                "x": 7.5,
+                "y": -2.5,
+                "elevation": 3
+            },
+            "3bec1535-21a7-668e-5d47-229db4d136d2": {
+                "x": 12.5,
+                "y": -2.5,
+                "elevation": 3
+            },
+            "e3a9cbc3-c4a3-9f90-08f5-d00b6036d79a": {
+                "x": 12.5,
+                "y": 5,
+                "elevation": 3
+            }
+        },
+        "walls": [
+            {
+                "corner1": "71d4f128-ae80-3d58-9bd2-711c6ce6cdf2",
+                "corner2": "f90da5e3-9e0e-eba7-173d-eb0b071e838e",
+                "frontTexture": {
+                    "color": "#FFFFFF",
+                    "repeat": 300,
+                    "normalmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_normal.jpg",
+                    "roughnessmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_roughness.jpg",
+                    "colormap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_basecolor.jpg",
+                    "ambientmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_ambientOcclusion.jpg",
+                    "bumpmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_height.png"
+                },
+                "backTexture": {
+                    "repeat": 200,
+                    "colormap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_basecolor.jpg",
+                    "bumpmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_height.png",
+                    "normalmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_normal.jpg",
+                    "roughnessmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_roughness.jpg",
+                    "ambientmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_ambientocclusion.jpg",
+                    "color": "#FFFFFF",
+                    "emissive": "#000000",
+                    "reflective": 0.5,
+                    "shininess": 0.5
+                },
+                "wallType": "STRAIGHT",
+                "a": {
+                    "x": -176.77669529663686,
+                    "y": 176.7766952966369
+                },
+                "b": {
+                    "x": -176.7766952966369,
+                    "y": 323.22330470336317
+                },
+                "thickness": 0.2
+            },
+            {
+                "corner1": "f90da5e3-9e0e-eba7-173d-eb0b071e838e",
+                "corner2": "da026c08-d76a-a944-8e7b-096b752da9ed",
+                "frontTexture": {
+                    "color": "#FFFFFF",
+                    "repeat": 300,
+                    "normalmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_normal.jpg",
+                    "roughnessmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_roughness.jpg",
+                    "colormap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_basecolor.jpg",
+                    "ambientmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_ambientOcclusion.jpg",
+                    "bumpmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_height.png"
+                },
+                "backTexture": {
+                    "repeat": 200,
+                    "colormap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_basecolor.jpg",
+                    "bumpmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_height.png",
+                    "normalmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_normal.jpg",
+                    "roughnessmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_roughness.jpg",
+                    "ambientmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_ambientocclusion.jpg",
+                    "color": "#FFFFFF",
+                    "emissive": "#000000",
+                    "reflective": 0.5,
+                    "shininess": 0.5
+                },
+                "wallType": "STRAIGHT",
+                "a": {
+                    "x": 176.7766952966369,
+                    "y": 676.7766952966368
+                },
+                "b": {
+                    "x": 323.22330470336317,
+                    "y": 676.776695296637
+                },
+                "thickness": 0.2
+            },
+            {
+                "corner1": "da026c08-d76a-a944-8e7b-096b752da9ed",
+                "corner2": "4e3d65cb-54c0-0681-28bf-bddcc7bdb571",
+                "frontTexture": {
+                    "color": "#FFFFFF",
+                    "repeat": 300,
+                    "normalmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_normal.jpg",
+                    "roughnessmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_roughness.jpg",
+                    "colormap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_basecolor.jpg",
+                    "ambientmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_ambientOcclusion.jpg",
+                    "bumpmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_height.png",
+                    "emissive": "#000000",
+                    "reflective": 0.5,
+                    "shininess": 0.5
+                },
+                "backTexture": {
+                    "repeat": 200,
+                    "colormap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_basecolor.jpg",
+                    "bumpmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_height.png",
+                    "normalmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_normal.jpg",
+                    "roughnessmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_roughness.jpg",
+                    "ambientmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_ambientocclusion.jpg",
+                    "color": "#FFFFFF",
+                    "emissive": "#000000",
+                    "reflective": 0.5,
+                    "shininess": 0.5
+                },
+                "wallType": "STRAIGHT",
+                "a": {
+                    "x": 676.7766952966368,
+                    "y": 323.2233047033631
+                },
+                "b": {
+                    "x": 676.776695296637,
+                    "y": 176.77669529663686
+                },
+                "thickness": 0.2
+            },
+            {
+                "corner1": "4e3d65cb-54c0-0681-28bf-bddcc7bdb571",
+                "corner2": "71d4f128-ae80-3d58-9bd2-711c6ce6cdf2",
+                "frontTexture": {
+                    "color": "#FFFFFF",
+                    "repeat": 300,
+                    "normalmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_normal.jpg",
+                    "roughnessmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_roughness.jpg",
+                    "colormap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_basecolor.jpg",
+                    "ambientmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_ambientOcclusion.jpg",
+                    "bumpmap": "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_height.png"
+                },
+                "backTexture": {
+                    "repeat": 200,
+                    "colormap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_basecolor.jpg",
+                    "bumpmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_height.png",
+                    "normalmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_normal.jpg",
+                    "roughnessmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_roughness.jpg",
+                    "ambientmap": "textures/Wall/Concrete-Wall-002/Concrete_Wall_002_ambientocclusion.jpg",
+                    "color": "#FFFFFF",
+                    "emissive": "#000000",
+                    "reflective": 0.5,
+                    "shininess": 0.5
+                },
+                "wallType": "STRAIGHT",
+                "a": {
+                    "x": 323.2233047033631,
+                    "y": -176.77669529663686
+                },
+                "b": {
+                    "x": 176.77669529663686,
+                    "y": -176.7766952966369
+                },
+                "thickness": 0.2
+            },
+            {
+                "corner1": "4e3d65cb-54c0-0681-28bf-bddcc7bdb571",
+                "corner2": "fed350d6-a751-1f3d-f6ec-eaa27de6bd12",
+                "frontTexture": {
+                    "color": "#FFFFFF",
+                    "repeat": 300,
+                    "ambientmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_ambientOcclusion.png",
+                    "bumpmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_height.png",
+                    "roughnessmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_roughness.png",
+                    "colormap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_basecolor.png",
+                    "normalmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_normal.png",
+                    "rotation": 0,
+                    "emissive": "#000000",
+                    "reflective": 0.5,
+                    "shininess": 0.5
+                },
+                "backTexture": {
+                    "color": "#FFFFFF",
+                    "repeat": 300,
+                    "ambientmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_ambientOcclusion.png",
+                    "bumpmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_height.png",
+                    "roughnessmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_roughness.png",
+                    "colormap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_basecolor.png",
+                    "normalmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_normal.png",
+                    "rotation": 0,
+                    "emissive": "#000000",
+                    "reflective": 0.5,
+                    "shininess": 0.5
+                },
+                "wallType": "STRAIGHT",
+                "a": {
+                    "x": 676.776695296637,
+                    "y": -1.4210854715202004e-14
+                },
+                "b": {
+                    "x": 750,
+                    "y": -73.22330470336311
+                },
+                "thickness": 0.2
+            },
+            {
+                "corner1": "fed350d6-a751-1f3d-f6ec-eaa27de6bd12",
+                "corner2": "3bec1535-21a7-668e-5d47-229db4d136d2",
+                "frontTexture": {
+                    "color": "#FFFFFF",
+                    "repeat": 300,
+                    "ambientmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_ambientOcclusion.png",
+                    "bumpmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_height.png",
+                    "roughnessmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_roughness.png",
+                    "colormap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_basecolor.png",
+                    "normalmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_normal.png",
+                    "rotation": 0,
+                    "emissive": "#000000",
+                    "reflective": 0.5,
+                    "shininess": 0.5
+                },
+                "backTexture": {
+                    "color": "#FFFFFF",
+                    "repeat": 300,
+                    "ambientmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_ambientOcclusion.png",
+                    "bumpmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_height.png",
+                    "roughnessmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_roughness.png",
+                    "colormap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_basecolor.png",
+                    "normalmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_normal.png",
+                    "rotation": 0,
+                    "emissive": "#000000",
+                    "reflective": 0.5,
+                    "shininess": 0.5
+                },
+                "wallType": "STRAIGHT",
+                "a": {
+                    "x": 926.776695296637,
+                    "y": -73.22330470336314
+                },
+                "b": {
+                    "x": 1073.223304703363,
+                    "y": -73.22330470336311
+                },
+                "thickness": 0.2
+            },
+            {
+                "corner1": "3bec1535-21a7-668e-5d47-229db4d136d2",
+                "corner2": "e3a9cbc3-c4a3-9f90-08f5-d00b6036d79a",
+                "frontTexture": {
+                    "color": "#FFFFFF",
+                    "repeat": 300,
+                    "ambientmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_ambientOcclusion.png",
+                    "bumpmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_height.png",
+                    "roughnessmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_roughness.png",
+                    "colormap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_basecolor.png",
+                    "normalmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_normal.png",
+                    "rotation": 0,
+                    "emissive": "#000000",
+                    "reflective": 0.5,
+                    "shininess": 0.5
+                },
+                "backTexture": {
+                    "color": "#FFFFFF",
+                    "repeat": 300,
+                    "ambientmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_ambientOcclusion.png",
+                    "bumpmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_height.png",
+                    "roughnessmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_roughness.png",
+                    "colormap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_basecolor.png",
+                    "normalmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_normal.png",
+                    "rotation": 0,
+                    "emissive": "#000000",
+                    "reflective": 0.5,
+                    "shininess": 0.5
+                },
+                "wallType": "STRAIGHT",
+                "a": {
+                    "x": 984.8349570550447,
+                    "y": 15.16504294495536
+                },
+                "b": {
+                    "x": 984.8349570550447,
+                    "y": 234.8349570550447
+                },
+                "thickness": 0.2
+            },
+            {
+                "corner1": "e3a9cbc3-c4a3-9f90-08f5-d00b6036d79a",
+                "corner2": "da026c08-d76a-a944-8e7b-096b752da9ed",
+                "frontTexture": {
+                    "color": "#FFFFFF",
+                    "repeat": 300,
+                    "ambientmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_ambientOcclusion.png",
+                    "bumpmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_height.png",
+                    "roughnessmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_roughness.png",
+                    "colormap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_basecolor.png",
+                    "normalmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_normal.png",
+                    "rotation": 0,
+                    "emissive": "#000000",
+                    "reflective": 0.5,
+                    "shininess": 0.5
+                },
+                "backTexture": {
+                    "color": "#FFFFFF",
+                    "repeat": 300,
+                    "ambientmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_ambientOcclusion.png",
+                    "bumpmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_height.png",
+                    "roughnessmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_roughness.png",
+                    "colormap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_basecolor.png",
+                    "normalmap": "textures/Wall/WhiteStuccoWall01_MR_2K/WhiteStuccoWall01_2K_normal.png",
+                    "rotation": 0,
+                    "emissive": "#000000",
+                    "reflective": 0.5,
+                    "shininess": 0.5
+                },
+                "wallType": "STRAIGHT",
+                "a": {
+                    "x": 984.8349570550447,
+                    "y": 234.8349570550447
+                },
+                "b": {
+                    "x": 765.1650429449553,
+                    "y": 234.83495705504464
+                },
+                "thickness": 0.2
+            }
+        ],
+        "rooms": {
+            "71d4f128-ae80-3d58-9bd2-711c6ce6cdf2,4e3d65cb-54c0-0681-28bf-bddcc7bdb571,da026c08-d76a-a944-8e7b-096b752da9ed,f90da5e3-9e0e-eba7-173d-eb0b071e838e": {
+                "name": "A Room"
+            },
+            "da026c08-d76a-a944-8e7b-096b752da9ed,4e3d65cb-54c0-0681-28bf-bddcc7bdb571,fed350d6-a751-1f3d-f6ec-eaa27de6bd12,3bec1535-21a7-668e-5d47-229db4d136d2,e3a9cbc3-c4a3-9f90-08f5-d00b6036d79a": {
+                "name": "방"
+            }
+        },
+        "wallTextures": [],
+        "floorTextures": {},
+        "newFloorTextures": {
+            "4e3d65cb-54c0-0681-28bf-bddcc7bdb571,71d4f128-ae80-3d58-9bd2-711c6ce6cdf2,da026c08-d76a-a944-8e7b-096b752da9ed,f90da5e3-9e0e-eba7-173d-eb0b071e838e": {
+                "repeat": 100,
+                "roughnessmap": "textures/Floor/Terrazzo_Tiles_001/Terrazzo_Tiles_001_roughness.jpg",
+                "ambientmap": "textures/Floor/Terrazzo_Tiles_001/Terrazzo_Tiles_001_ambientOcclusion.jpg",
+                "normalmap": "textures/Floor/Terrazzo_Tiles_001/Terrazzo_Tiles_001_normal.jpg",
+                "colormap": "textures/Floor/Terrazzo_Tiles_001/Terrazzo_Tiles_001_basecolor.jpg",
+                "color": "#FFFFFF",
+                "emissive": "#000000",
+                "reflective": 0.5,
+                "shininess": 0.5
+            },
+            "3bec1535-21a7-668e-5d47-229db4d136d2,4e3d65cb-54c0-0681-28bf-bddcc7bdb571,da026c08-d76a-a944-8e7b-096b752da9ed,e3a9cbc3-c4a3-9f90-08f5-d00b6036d79a,fed350d6-a751-1f3d-f6ec-eaa27de6bd12": {
+                "color": "#FFFFFF",
+                "emissive": "#181818",
+                "repeat": 100,
+                "ambientmap": "textures/Floor/Stone_Tiles_004/Stone_Tiles_004_ambientOcclusion.jpg",
+                "colormap": "textures/Floor/Stone_Tiles_004/Stone_Tiles_004_basecolor.jpg",
+                "roughnessmap": "textures/Floor/Stone_Tiles_004/Stone_Tiles_004_roughness.jpg",
+                "normalmap": "textures/Floor/Stone_Tiles_004/Stone_Tiles_004_normal.jpg",
+                "rotation": 0,
+                "reflective": 0.5,
+                "shininess": 0.5
+            }
+        },
+        "carbonSheet": {},
+        "boundary": {
+            "points": [],
+            "style": {
+                "type": "color",
+                "color": "#00FF00",
+                "repeat": 50,
+                "colormap": null
+            }
+        },
+        "units": "m",
+        "measurement": false,
+        "magnetic_snap": true
+    },
+    "items": [
+      {
+            "id": "7d0b3e90-c315-e7a5-a6d9-594757d5b7e4",
+            "itemName": "Main Door",
+            "itemType": 7,
+            "position": [
+                632.3531265126858,
+                133,
+                500
+            ],
+            "rotation": [
+                0,
+                -3.141592653589793,
+                0
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "size": [
+                138,
+                266,
+                20
+            ],
+            "fixed": true,
+            "resizable": true,
+            "modelURL": "models/doorway.glb",
+            "isParametric": false,
+            "wall": "e3a9cbc3-c4a3-9f90-08f5-d00b6036d79a,da026c08-d76a-a944-8e7b-096b752da9ed",
+            "wallSide": "front",
+            "wallSurfacePoint": [
+                632.3531265126858,
+                133,
+                500
+            ],
+            "mesh": [
+                "Cube"
+            ],
+            "textures": [
+                {
+                    "name": "Cube",
+                    "texture": "",
+                    "color": "",
+                    "shininess": 10,
+                    "size": []
+                }
+            ],
+            "innerRotation": [
+                0,
+                -3.141592653589793,
+                0
+            ]
+        },
+        {
+            "itemName": "Tennis Table",
+            "itemType": 1,
+            "position": [
+                1019.1735537817156,
+                49.05,
+                341.7895865393001
+            ],
+            "rotation": [
+                0,
+                0,
+                0
+            ],
+            "scale": [
+                1,
+                1,
+                1
+            ],
+            "size": [
+                281.598,
+                98.1,
+                172.4
+            ],
+            "fixed": false,
+            "resizable": false,
+            "modelURL": "models/table.glb",
+            "isParametric": false,
+            "mesh": [
+                "Table_Tennis_Table"
+            ],
+            "textures": [
+                {
+                    "name": "Table_Tennis_Table",
+                    "texture": "",
+                    "color": "",
+                    "shininess": 10,
+                    "size": []
+                }
+            ]
+        }
+    ]
+}

@@ -7,3 +7,4 @@ features:
   tag: '@orchestra'
   valid_tags:
   - chat
+  - blueprint

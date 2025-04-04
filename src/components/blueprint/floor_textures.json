@@ -1,0 +1,51 @@
+{
+  "Marble_Tiles_001": {
+    "ambientmap": "/textures/Floor/Marble_Tiles_001/Marble_Tiles_001_ambientOcclusion.jpg",
+    "colormap": "/textures/Floor/Marble_Tiles_001/Marble_Tiles_001_basecolor.jpg",
+    "roughnessmap": "/textures/Floor/Marble_Tiles_001/Marble_Tiles_001_roughness.jpg",
+    "bumpmap": "/textures/Floor/Marble_Tiles_001/Marble_Tiles_001_height.png",
+    "normalmap": "/textures/Floor/Marble_Tiles_001/Marble_Tiles_001_normal.jpg"
+  },
+  "Stone_Tiles_004": {
+    "ambientmap": "/textures/Floor/Stone_Tiles_004/Stone_Tiles_004_ambientOcclusion.jpg",
+    "colormap": "/textures/Floor/Stone_Tiles_004/Stone_Tiles_004_basecolor.jpg",
+    "roughnessmap": "/textures/Floor/Stone_Tiles_004/Stone_Tiles_004_roughness.jpg",
+    "bumpmap": "/textures/Floor/Stone_Tiles_004/Stone_Tiles_004_height.png",
+    "normalmap": "/textures/Floor/Stone_Tiles_004/Stone_Tiles_004_normal.jpg"
+  },
+  "Terracotta_Tiles_003": {
+    "ambientmap": "/textures/Floor/Terracotta_Tiles_003/Terracotta_Tiles_003_ambientOcclusion.jpg",
+    "colormap": "/textures/Floor/Terracotta_Tiles_003/Terracotta_Tiles_003_basecolor.jpg",
+    "roughnessmap": "/textures/Floor/Terracotta_Tiles_003/Terracotta_Tiles_003_roughness.jpg",
+    "bumpmap": "/textures/Floor/Terracotta_Tiles_003/Terracotta_Tiles_003_height.png",
+    "normalmap": "/textures/Floor/Terracotta_Tiles_003/Terracotta_Tiles_003_normal.jpg"
+  },
+  "Wood_Herringbone_Tiles_001": {
+    "ambientmap": "/textures/Floor/Wood_Herringbone_Tiles_001/Wood_Herringbone_Tiles_001_ambientOcclusion.jpg",
+    "colormap": "/textures/Floor/Wood_Herringbone_Tiles_001/Wood_Herringbone_Tiles_001_basecolor.jpg",
+    "roughnessmap": "/textures/Floor/Wood_Herringbone_Tiles_001/Wood_Herringbone_Tiles_001_roughness.jpg",
+    "bumpmap": "/textures/Floor/Wood_Herringbone_Tiles_001/Wood_Herringbone_Tiles_001_height.png",
+    "normalmap": "/textures/Floor/Wood_Herringbone_Tiles_001/Wood_Herringbone_Tiles_001_normal.jpg"
+  },
+  "Rubber_Floor_001": {
+    "ambientmap": "/textures/Floor/Rubber_Floor_001/Rubber_Floor_001_ambientOcclusion.jpg",
+    "colormap": "/textures/Floor/Rubber_Floor_001/Rubber_Floor_001_basecolor.jpg",
+    "roughnessmap": "/textures/Floor/Rubber_Floor_001/Rubber_Floor_001_roughness.jpg",
+    "bumpmap": "/textures/Floor/Rubber_Floor_001/Rubber_Floor_001_height.png",
+    "normalmap": "/textures/Floor/Rubber_Floor_001/Rubber_Floor_001_normal.jpg"
+  },
+  "Stylized_Stone_Floor_001": {
+    "ambientmap": "/textures/Floor/Stylized_Stone_Floor_001/Stylized_Stone_Floor_001_ambientOcclusion.jpg",
+    "colormap": "/textures/Floor/Stylized_Stone_Floor_001/Stylized_Stone_Floor_001_basecolor.jpg",
+    "roughnessmap": "/textures/Floor/Stylized_Stone_Floor_001/Stylized_Stone_Floor_001_roughness.jpg",
+    "bumpmap": "/textures/Floor/Stylized_Stone_Floor_001/Stylized_Stone_Floor_001_height.png",
+    "normalmap": "/textures/Floor/Stylized_Stone_Floor_001/Stylized_Stone_Floor_001_normal.jpg"
+  },
+  "Terrazzo_Tiles_001": {
+    "ambientmap": "/textures/Floor/Terrazzo_Tiles_001/Terrazzo_Tiles_001_ambientOcclusion.jpg",
+    "colormap": "/textures/Floor/Terrazzo_Tiles_001/Terrazzo_Tiles_001_basecolor.jpg",
+    "roughnessmap": "/textures/Floor/Terrazzo_Tiles_001/Terrazzo_Tiles_001_roughness.jpg",
+    "bumpmap": "/textures/Floor/Terrazzo_Tiles_001/Terrazzo_Tiles_001_height.png",
+    "normalmap": "/textures/Floor/Terrazzo_Tiles_001/Terrazzo_Tiles_001_normal.jpg"
+  }
+}
