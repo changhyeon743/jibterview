@@ -63,7 +63,7 @@ const ControlPanel = ({
                       }) => {
     const [is2DMode, setIs2DMode] = React.useState(false);
     const [isPerspective, setIsPerspective] = React.useState(false);
-    const [isRealistic, setIsRealistic] = React.useState(false);
+    const [isRealistic, setIsRealistic] = React.useState(true);
     const fileInputRef = useRef(null);
 
     const toggleRenderingMode = () => {
@@ -75,9 +75,9 @@ const ControlPanel = ({
             blueprint.roomplanner.floors3d.forEach((item) => {
                 item.realistic = !isRealistic;
             });
-            blueprint.roomplanner.edges3d.forEach((item) => {
-                item.realistic = !isRealistic;
-            });
+            // blueprint.roomplanner.edges3d.forEach((item) => {
+            //     item.realistic = !isRealistic;
+            // });
             blueprint.roomplanner.needsUpdate = true;
         }
     };
@@ -88,6 +88,7 @@ const ControlPanel = ({
     };
 
     const switchCamera = () => {
+        console.log("Switching camera with: ",blueprint?.roomplanner)
         if (blueprint?.roomplanner) {
             blueprint.roomplanner.switchCameraMode();
             setIsPerspective((prev) => !prev);

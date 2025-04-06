@@ -1,3 +1,6 @@
+// src/app/(chat)/api/chat/route.ts
+//@orchestra chat
+
 import {
   convertToCoreMessages,
   CoreMessage,
@@ -8,9 +11,6 @@ import {
 } from 'ai';
 import { z } from 'zod';
 
-import { customModel } from '@/lib/ai';
-import { models } from '@/lib/ai/models';
-import { blocksPrompt, regularPrompt, systemPrompt } from '@/lib/ai/prompts';
 import { getChatById, getDocumentById, getSession } from '@/db/cached-queries';
 import {
   saveChat,
@@ -19,6 +19,10 @@ import {
   saveSuggestions,
   deleteChatById,
 } from '@/db/mutations';
+import { customModel } from '@/lib/ai';
+import { models } from '@/lib/ai/models';
+import {blocksPrompt, regularPrompt, systemPrompt} from '@/lib/ai/prompts';
+import { BlueprintAction } from '@/lib/blueprint'; // 중앙화된 모듈에서 가져옴
 import { createClient } from '@/lib/supabase/server';
 import { MessageRole } from '@/lib/supabase/types';
 import {
@@ -32,10 +36,11 @@ import { generateTitleFromUserMessage } from '../../actions';
 export const maxDuration = 60;
 
 type AllowedTools =
-  | 'createDocument'
-  | 'updateDocument'
-  | 'requestSuggestions'
-  | 'getWeather';
+    | 'createDocument'
+    | 'updateDocument'
+    | 'requestSuggestions'
+    | 'getWeather'
+    | 'blueprintAction';
 
 const blocksTools: AllowedTools[] = [
   'createDocument',
@@ -45,7 +50,8 @@ const blocksTools: AllowedTools[] = [
 
 const weatherTools: AllowedTools[] = ['getWeather'];
 
-const allTools: AllowedTools[] = [...blocksTools, ...weatherTools];
+const blueprintTools: AllowedTools[] = ['blueprintAction'];
+const allTools: AllowedTools[] = [...blocksTools, ...weatherTools, ...blueprintTools];
 
 async function getUser() {
   const supabase = await createClient();
@@ -66,19 +72,19 @@ function formatMessageContent(message: CoreMessage): string {
   // For user messages, store as plain text
   if (message.role === 'user') {
     return typeof message.content === 'string'
-      ? message.content
-      : JSON.stringify(message.content);
+        ? message.content
+        : JSON.stringify(message.content);
   }
 
   // For tool messages, format as array of tool results
   if (message.role === 'tool') {
     return JSON.stringify(
-      message.content.map((content) => ({
-        type: content.type || 'tool-result',
-        toolCallId: content.toolCallId,
-        toolName: content.toolName,
-        result: content.result,
-      }))
+        message.content.map((content) => ({
+          type: content.type || 'tool-result',
+          toolCallId: content.toolCallId,
+          toolName: content.toolName,
+          result: content.result,
+        }))
     );
   }
 
@@ -89,20 +95,20 @@ function formatMessageContent(message: CoreMessage): string {
     }
 
     return JSON.stringify(
-      message.content.map((content) => {
-        if (content.type === 'text') {
+        message.content.map((content) => {
+          if (content.type === 'text') {
+            return {
+              type: 'text',
+              text: content.text,
+            };
+          }
           return {
-            type: 'text',
-            text: content.text,
+            type: 'tool-call',
+            toolCallId: content.toolCallId,
+            toolName: content.toolName,
+            args: content.args,
           };
-        }
-        return {
-          type: 'tool-call',
-          toolCallId: content.toolCallId,
-          toolName: content.toolName,
-          args: content.args,
-        };
-      })
+        })
     );
   }
 
@@ -115,7 +121,7 @@ export async function POST(request: Request) {
     messages,
     modelId,
   }: { id: string; messages: Array<Message>; modelId: string } =
-    await request.json();
+      await request.json();
 
   const user = await getUser();
 
@@ -170,6 +176,7 @@ export async function POST(request: Request) {
       maxSteps: 5,
       experimental_activeTools: allTools,
       tools: {
+        blueprintAction: BlueprintAction, // 중앙화된 모듈에서 가져온 도구 사용
         getWeather: {
           description: 'Get the current weather at a location',
           parameters: z.object({
@@ -178,7 +185,7 @@ export async function POST(request: Request) {
           }),
           execute: async ({ latitude, longitude }) => {
             const response = await fetch(
-              `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&hourly=temperature_2m&daily=sunrise,sunset&timezone=auto`
+                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&hourly=temperature_2m&daily=sunrise,sunset&timezone=auto`
             );
 
             const weatherData = await response.json();
@@ -203,7 +210,7 @@ export async function POST(request: Request) {
             const { fullStream } = await streamText({
               model: customModel(model.apiIdentifier),
               system:
-                'Write about the given topic. Markdown is supported. Use headings wherever appropriate.',
+                  'Write about the given topic. Markdown is supported. Use headings wherever appropriate.',
               prompt: title,
             });
 
@@ -219,50 +226,6 @@ export async function POST(request: Request) {
                 });
               }
             }
-
-            // Try to save with retries
-            // let attempts = 0;
-            // const maxAttempts = 3;
-            // let savedId: string | null = null;
-
-            // while (attempts < maxAttempts && !savedId) {
-            //   try {
-            //     await saveDocument({
-            //       id,
-            //       title,
-            //       content: draftText,
-            //       userId: user.id,
-            //     });
-            //     savedId = id;
-            //     break;
-            //   } catch (error) {
-            //     attempts++;
-            //     if (attempts === maxAttempts) {
-            //       // If original ID fails, try with a new ID
-            //       const newId = generateUUID();
-            //       try {
-            //         await saveDocument({
-            //           id: newId,
-            //           title,
-            //           content: draftText,
-            //           userId: user.id,
-            //         });
-            //         // Update the ID in the UI
-            //         streamingData.append({ type: 'id', content: newId });
-            //         savedId = newId;
-            //       } catch (finalError) {
-            //         console.error('Final attempt failed:', finalError);
-            //         return {
-            //           error:
-            //             'Failed to create document after multiple attempts',
-            //         };
-            //       }
-            //     }
-            //     await new Promise((resolve) =>
-            //       setTimeout(resolve, 100 * attempts)
-            //     );
-            //   }
-            // }
 
             streamingData.append({ type: 'finish', content: '' });
 
@@ -287,8 +250,8 @@ export async function POST(request: Request) {
           parameters: z.object({
             id: z.string().describe('The ID of the document to update'),
             description: z
-              .string()
-              .describe('The description of changes that need to be made'),
+                .string()
+                .describe('The description of changes that need to be made'),
           }),
           execute: async ({ id, description }) => {
             const document = await getDocumentById(id);
@@ -310,7 +273,7 @@ export async function POST(request: Request) {
             const { fullStream } = await streamText({
               model: customModel(model.apiIdentifier),
               system:
-                'You are a helpful writing assistant. Based on the description, please update the piece of writing.',
+                  'You are a helpful writing assistant. Based on the description, please update the piece of writing.',
               experimental_providerMetadata: {
                 openai: {
                   prediction: {
@@ -364,8 +327,8 @@ export async function POST(request: Request) {
           description: 'Request suggestions for a document',
           parameters: z.object({
             documentId: z
-              .string()
-              .describe('The ID of the document to request edits'),
+                .string()
+                .describe('The ID of the document to request edits'),
           }),
           execute: async ({ documentId }) => {
             const document = await getDocumentById(documentId);
@@ -388,17 +351,17 @@ export async function POST(request: Request) {
             const { elementStream } = await streamObject({
               model: customModel(model.apiIdentifier),
               system:
-                'You are a help writing assistant. Given a piece of writing, please offer suggestions to improve the piece of writing and describe the change. It is very important for the edits to contain full sentences instead of just words. Max 5 suggestions.',
+                  'You are a help writing assistant. Given a piece of writing, please offer suggestions to improve the piece of writing and describe the change. It is very important for the edits to contain full sentences instead of just words. Max 5 suggestions.',
               prompt: document.content,
               output: 'array',
               schema: z.object({
                 originalSentence: z.string().describe('The original sentence'),
                 suggestedSentence: z
-                  .string()
-                  .describe('The suggested sentence'),
+                    .string()
+                    .describe('The suggested sentence'),
                 description: z
-                  .string()
-                  .describe('The description of the suggestion'),
+                    .string()
+                    .describe('The description of the suggestion'),
               }),
             });
 
@@ -433,19 +396,6 @@ export async function POST(request: Request) {
               });
             }
 
-            // if (user && user.id) {
-            //   for (const suggestion of suggestions) {
-            //     await saveSuggestions({
-            //       documentId: suggestion.documentId,
-            //       documentCreatedAt: document.created_at,
-            //       originalText: suggestion.originalText,
-            //       suggestedText: suggestion.suggestedText,
-            //       description: suggestion.description,
-            //       userId: user.id,
-            //     });
-            //   }
-            // }
-
             return {
               id: documentId,
               title: document.title,
@@ -458,28 +408,28 @@ export async function POST(request: Request) {
         if (user && user.id) {
           try {
             const responseMessagesWithoutIncompleteToolCalls =
-              sanitizeResponseMessages(responseMessages);
+                sanitizeResponseMessages(responseMessages);
 
             await saveMessages({
               chatId: id,
               messages: responseMessagesWithoutIncompleteToolCalls.map(
-                (message) => {
-                  const messageId = generateUUID();
+                  (message) => {
+                    const messageId = generateUUID();
 
-                  if (message.role === 'assistant') {
-                    streamingData.appendMessageAnnotation({
-                      messageIdFromServer: messageId,
-                    });
+                    if (message.role === 'assistant') {
+                      streamingData.appendMessageAnnotation({
+                        messageIdFromServer: messageId,
+                      });
+                    }
+
+                    return {
+                      id: messageId,
+                      chat_id: id,
+                      role: message.role as MessageRole,
+                      content: formatMessageContent(message),
+                      created_at: new Date().toISOString(),
+                    };
                   }
-
-                  return {
-                    id: messageId,
-                    chat_id: id,
-                    role: message.role as MessageRole,
-                    content: formatMessageContent(message),
-                    created_at: new Date().toISOString(),
-                  };
-                }
               ),
             });
           } catch (error) {

@@ -47,6 +47,8 @@ import { CornerGroups } from "./cornergroups.js";
 import Boundary from "./boundary.js";
 //import { Viewer2D } from '../viewer2d/Viewer2D.js';
 
+// @orchestra blueprint
+
 /** */
 export const defaultFloorPlanTolerance = 10.0;
 

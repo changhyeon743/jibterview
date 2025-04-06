@@ -59,7 +59,7 @@ export class Floor3D extends EventDispatcher {
     this.roomLightHelper = null;
     this.floorPlane = null;
     this.roofPlane = null;
-    this.realistic = false; // private 프로퍼티로 변경
+    this.realistic = true; // private 프로퍼티로 변경
 
     this.changedevent = this.redraw.bind(this);
     this.__materialChangedEvent = this.__updateTexturePack.bind(this);

@@ -35,6 +35,7 @@ import { Button } from '../ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 import type { Document, Suggestion, Vote } from '@/lib/supabase/types';
+//@orchestra chat
 
 export interface UIBlock {
   title: string;

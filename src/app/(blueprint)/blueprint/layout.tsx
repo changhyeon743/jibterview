@@ -11,17 +11,9 @@ export default async function Layout({
                                      }: {
     children: React.ReactNode;
 }) {
-    const cookieStore = await cookies();
-    const isCollapsed = cookieStore.get('sidebar:state')?.value !== 'true';
-
-    const user = await getSession();
-
     return (
-        <SidebarProvider defaultOpen={!isCollapsed}>
             <BlueprintProvider>
-                <AppSidebar user={user} />
-                <SidebarInset>{children}</SidebarInset>
+                {children}
             </BlueprintProvider>
-        </SidebarProvider>
     );
 }

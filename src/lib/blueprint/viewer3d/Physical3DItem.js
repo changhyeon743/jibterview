@@ -155,7 +155,7 @@ export class Physical3DItem extends Mesh {
       this.__loadItemModel();
     }
 
-    this.__realistic = false;
+    this.__realistic = true;
     this.__initialDropOffset = 80; // 50 units 위에서 시작
     this.__dropAnimationDuration = 1.2; // 애니메이션 지속 시간
   }

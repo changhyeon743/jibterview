@@ -495,6 +495,7 @@ export class Viewer3D extends Scene {
             type: EVENT_ITEM_SELECTED,
             item: physicalRoomItem,
         });
+
         // this.dragcontrols.enabled = true;
         // this.dragcontrols.selected = physicalRoomItem;
         // this.needsUpdate = true;
