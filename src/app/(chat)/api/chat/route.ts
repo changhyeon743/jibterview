@@ -21,7 +21,7 @@ import {
 } from '@/db/mutations';
 import { customModel } from '@/lib/ai';
 import { models } from '@/lib/ai/models';
-import {blocksPrompt, regularPrompt, systemPrompt} from '@/lib/ai/prompts';
+import {regularPrompt, systemPrompt} from '@/lib/ai/prompts';
 import { BlueprintAction } from '@/lib/blueprint'; // 중앙화된 모듈에서 가져옴
 import { createClient } from '@/lib/supabase/server';
 import { MessageRole } from '@/lib/supabase/types';

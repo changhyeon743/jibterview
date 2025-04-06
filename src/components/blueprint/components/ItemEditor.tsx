@@ -1,24 +1,20 @@
+//@orchestra blueprint
 import React, { useState, useEffect } from "react";
 import { Vector3 } from "three";
 import { Physical3DItem } from "@/lib/blueprint/viewer3d/Physical3DItem";
 import { ChevronUp, ChevronDown, Minimize2, Maximize2 } from "lucide-react";
-
-//@orchestra blueprint
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"; // shadcn/ui
 
 interface ItemEditorProps {
   selectedItem: Physical3DItem | null;
   setSelectedItem: React.Dispatch<React.SetStateAction<Physical3DItem | null>>;
   deleteItem: () => void;
 }
-
-const SCALE_OPTIONS = [
-  { label: "50%", value: 0.5 },
-  { label: "75%", value: 0.75 },
-  { label: "100%", value: 1 },
-  { label: "125%", value: 1.25 },
-  { label: "150%", value: 1.5 },
-  { label: "200%", value: 2 },
-];
 
 const ItemEditor: React.FC<ItemEditorProps> = ({
                                                  selectedItem,
@@ -29,6 +25,7 @@ const ItemEditor: React.FC<ItemEditorProps> = ({
   const [currentSize, setCurrentSize] = useState<Vector3>(new Vector3(1, 1, 1));
   const [itemRotationY, setItemRotationY] = useState<number>(0);
   const [itemPositionY, setItemPositionY] = useState<number>(0);
+  const [minimized, setMinimized] = useState<boolean>(true);
 
   useEffect(() => {
     if (selectedItem?.itemModel) {
@@ -41,12 +38,9 @@ const ItemEditor: React.FC<ItemEditorProps> = ({
     }
   }, [selectedItem]);
 
-  if (!selectedItem || !selectedItem.itemModel) {
-    return null;
-  }
+  if (!selectedItem || !selectedItem.itemModel) return null;
 
   const handleResize = (width: number, height: number, depth: number) => {
-    if (!selectedItem || !selectedItem.itemModel) return;
     const newSize = new Vector3(width, height, depth);
     selectedItem.resize(newSize);
     setCurrentSize(newSize);
@@ -65,7 +59,6 @@ const ItemEditor: React.FC<ItemEditorProps> = ({
   };
 
   const rotateItem = (angle: number) => {
-    if (!selectedItem || !selectedItem.itemModel) return;
     const newAngle = selectedItem.itemModel.innerRotation.clone();
     newAngle.y += angle;
     selectedItem.rotate(newAngle);
@@ -73,7 +66,6 @@ const ItemEditor: React.FC<ItemEditorProps> = ({
   };
 
   const moveItemY = (delta: number) => {
-    if (!selectedItem || !selectedItem.itemModel) return;
     const newPosition = selectedItem.itemModel.position.clone();
     newPosition.y = itemPositionY + delta;
     selectedItem.itemModel.position = newPosition;
@@ -81,11 +73,14 @@ const ItemEditor: React.FC<ItemEditorProps> = ({
   };
 
   const handleYPositionChange = (value: number) => {
-    if (!selectedItem || !selectedItem.itemModel) return;
     const newPosition = selectedItem.itemModel.position.clone();
     newPosition.y = value;
     selectedItem.itemModel.position = newPosition;
     setItemPositionY(value);
+  };
+
+  const toggleMinimize = () => {
+    setMinimized(!minimized);
   };
 
   const RotationButton: React.FC<{ angle: number; label: string }> = ({
@@ -94,143 +89,137 @@ const ItemEditor: React.FC<ItemEditorProps> = ({
                                                                       }) => (
       <button
           onClick={() => rotateItem(angle)}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-1 px-2 rounded-full text-xs shadow-md transition-all duration-200 ease-in-out transform hover:scale-110"
+          className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-1 px-2 rounded-full text-[10px] shadow-sm transition-all"
       >
         {label}
       </button>
   );
 
   return (
-      <div className="mt-4 bg-white p-4 rounded shadow max-w-xs border border-gray-200">
-        <h3 className="text-base font-bold mb-2 text-center">선택된 아이템</h3>
-        <p className="text-center text-sm mb-2">{selectedItem.name}</p>
-
-        <div className="mb-4">
-          <h4 className="text-xs font-medium text-gray-700 mb-2">크기 조정</h4>
-          <div className="space-y-4">
-            <div className="flex flex-col">
-              <label className="text-xs text-gray-600 mb-1">너비 (Width)</label>
-              <div className="flex items-center gap-2">
-                <button
-                    onClick={() => adjustDimension("x", -currentSize.x * 0.1)}
-                    className="bg-gray-200 hover:bg-gray-300 text-xs rounded px-2 py-1"
-                >
-                  -10%
-                </button>
-                <input
-                    type="number"
-                    value={currentSize.x}
-                    onChange={(e) => handleDimensionChange("x", parseFloat(e.target.value))}
-                    className="border border-gray-300 rounded px-2 py-1 text-xs"
-                    step="0.1"
-                />
-                <button
-                    onClick={() => adjustDimension("x", currentSize.x * 0.1)}
-                    className="bg-gray-200 hover:bg-gray-300 text-xs rounded px-2 py-1"
-                >
-                  +10%
-                </button>
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <label className="text-xs text-gray-600 mb-1">높이 (Height)</label>
-              <div className="flex items-center gap-2">
-                <button
-                    onClick={() => adjustDimension("y", -currentSize.y * 0.1)}
-                    className="bg-gray-200 hover:bg-gray-300 text-xs rounded px-2 py-1"
-                >
-                  -10%
-                </button>
-                <input
-                    type="number"
-                    value={currentSize.y}
-                    onChange={(e) => handleDimensionChange("y", parseFloat(e.target.value))}
-                    className="border border-gray-300 rounded px-2 py-1 text-xs"
-                    step="0.1"
-                />
-                <button
-                    onClick={() => adjustDimension("y", currentSize.y * 0.1)}
-                    className="bg-gray-200 hover:bg-gray-300 text-xs rounded px-2 py-1"
-                >
-                  +10%
-                </button>
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <label className="text-xs text-gray-600 mb-1">깊이 (Depth)</label>
-              <div className="flex items-center gap-2">
-                <button
-                    onClick={() => adjustDimension("z", -currentSize.z * 0.1)}
-                    className="bg-gray-200 hover:bg-gray-300 text-xs rounded px-2 py-1"
-                >
-                  -10%
-                </button>
-                <input
-                    type="number"
-                    value={currentSize.z}
-                    onChange={(e) => handleDimensionChange("z", parseFloat(e.target.value))}
-                    className="border border-gray-300 rounded px-2 py-1 text-xs"
-                    step="0.1"
-                />
-                <button
-                    onClick={() => adjustDimension("z", currentSize.z * 0.1)}
-                    className="bg-gray-200 hover:bg-gray-300 text-xs rounded px-2 py-1"
-                >
-                  +10%
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-2 mb-2">
-          <label htmlFor="item-y-position" className="block text-xs font-medium text-gray-700">
-            높이 위치: {itemPositionY.toFixed(1)}
-          </label>
-          <div className="flex items-center space-x-2">
-            <input
-                type="range"
-                id="item-y-position"
-                min="0"
-                max="300"
-                step="1"
-                value={itemPositionY}
-                onChange={(e) => handleYPositionChange(parseFloat(e.target.value))}
-                className="flex-grow"
-            />
+      <div className={`fixed top-16 right-2 z-40 bg-white rounded-xl shadow-lg border border-gray-200 text-xs transition-all ${minimized ? 'w-auto' : 'w-[220px] sm:w-[250px] md:w-[280px]'} max-h-[90vh] sm:max-h-[80vh] p-1`}>
+        {/* Header with minimize toggle */}
+        <div className={`flex justify-between items-center p-2 ${minimized ? 'border-0' : 'border-b border-gray-200'}`}>
+          {minimized ? (
+              <p className="text-gray-700 text-[10px] truncate max-w-[100px] mr-1">{selectedItem.name}</p>
+          ) : (
+              <h3 className="font-bold">선택된 아이템</h3>
+          )}
+          <div className="flex items-center">
+            {!minimized && <p className="text-gray-700 text-[10px] mr-2 truncate max-w-[150px]">{selectedItem.name}</p>}
             <button
-                onClick={() => moveItemY(10)}
-                className="bg-gray-200 hover:bg-gray-300 p-1 rounded"
-                title="위로 이동"
+                onClick={toggleMinimize}
+                className="bg-gray-100 hover:bg-gray-200 p-1 rounded-full transition-all flex-shrink-0"
+                aria-label={minimized ? "Expand" : "Minimize"}
             >
-              <ChevronUp className="w-4 h-4" />
-            </button>
-            <button
-                onClick={() => moveItemY(-10)}
-                className="bg-gray-200 hover:bg-gray-300 p-1 rounded"
-                title="아래로 이동"
-            >
-              <ChevronDown className="w-4 h-4" />
+              {minimized ? <Maximize2 className="w-3 h-3" /> : <Minimize2 className="w-3 h-3" />}
             </button>
           </div>
         </div>
 
-        <div className="mt-2 flex justify-between items-center">
-        <span className="text-xs font-medium text-gray-700">
-          회전: {itemRotationY.toFixed(2)}
-        </span>
-          <div className="space-x-2">
-            <RotationButton angle={-Math.PI / 4} label="↺ 45°" />
-            <RotationButton angle={Math.PI / 4} label="↻ 45°" />
-          </div>
-        </div>
+        {/* Content area - only shown when not minimized */}
+        {!minimized && (
+            <div className="p-3 overflow-y-auto max-h-[calc(90vh-40px)] sm:max-h-[calc(80vh-40px)]">
+              <Accordion type="multiple" className="w-full space-y-2">
+                {/* 크기 조정 */}
+                <AccordionItem value="size">
+                  <AccordionTrigger className="py-1 text-xs">크기 조정</AccordionTrigger>
+                  <AccordionContent>
+                    {["x", "y", "z"].map((dim) => (
+                        <div key={dim} className="mb-2">
+                          <label className="block text-[10px] text-gray-600 capitalize mb-1">
+                            {dim === "x" ? "너비" : dim === "y" ? "높이" : "깊이"}
+                          </label>
+                          <div className="flex items-center gap-1">
+                            <button
+                                onClick={() =>
+                                    adjustDimension(dim as "x" | "y" | "z", -currentSize[dim as "x" | "y" | "z"] * 0.1)
+                                }
+                                className="bg-gray-200 hover:bg-gray-300 px-1 py-0.5 rounded text-[10px]"
+                            >
+                              -10%
+                            </button>
+                            <input
+                                type="number"
+                                value={currentSize[dim as "x" | "y" | "z"]}
+                                onChange={(e) =>
+                                    handleDimensionChange(dim as "x" | "y" | "z", parseFloat(e.target.value))
+                                }
+                                step="0.1"
+                                className="border border-gray-300 rounded px-1.5 py-0.5 text-[10px] w-full"
+                            />
+                            <button
+                                onClick={() =>
+                                    adjustDimension(dim as "x" | "y" | "z", currentSize[dim as "x" | "y" | "z"] * 0.1)
+                                }
+                                className="bg-gray-200 hover:bg-gray-300 px-1 py-0.5 rounded text-[10px]"
+                            >
+                              +10%
+                            </button>
+                          </div>
+                        </div>
+                    ))}
+                  </AccordionContent>
+                </AccordionItem>
 
-        <button
-            onClick={deleteItem}
-            className="mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm w-full"
-        >
-          삭제하기
-        </button>
+                {/* 위치 */}
+                <AccordionItem value="position">
+                  <AccordionTrigger className="py-1 text-xs">높이 위치</AccordionTrigger>
+                  <AccordionContent>
+                    <label className="block mb-1 text-[10px]">
+                      높이 위치: {itemPositionY.toFixed(1)}
+                    </label>
+                    <div className="flex items-center gap-1">
+                      <input
+                          type="range"
+                          min="0"
+                          max="300"
+                          step="1"
+                          value={itemPositionY}
+                          onChange={(e) => handleYPositionChange(parseFloat(e.target.value))}
+                          className="flex-grow"
+                      />
+                      <button
+                          onClick={() => moveItemY(10)}
+                          className="bg-gray-200 hover:bg-gray-300 p-1 rounded"
+                      >
+                        <ChevronUp className="w-3 h-3" />
+                      </button>
+                      <button
+                          onClick={() => moveItemY(-10)}
+                          className="bg-gray-200 hover:bg-gray-300 p-1 rounded"
+                      >
+                        <ChevronDown className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+
+                {/* 회전 */}
+                <AccordionItem value="rotation">
+                  <AccordionTrigger className="py-1 text-xs">회전</AccordionTrigger>
+                  <AccordionContent>
+                    <div className="flex justify-between items-center mt-1">
+                  <span className="text-[10px] font-medium text-gray-700">
+                    회전: {itemRotationY.toFixed(2)}
+                  </span>
+                      <div className="space-x-1">
+                        <RotationButton angle={-Math.PI / 4} label="↺ 45°" />
+                        <RotationButton angle={Math.PI / 4} label="↻ 45°" />
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+
+              {/* 삭제 버튼 */}
+              <button
+                  onClick={deleteItem}
+                  className="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded text-xs mt-3"
+              >
+                삭제하기
+              </button>
+            </div>
+        )}
       </div>
   );
 };

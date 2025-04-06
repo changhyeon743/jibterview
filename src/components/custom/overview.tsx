@@ -21,16 +21,14 @@ export const Overview = () => {
           {/*  <span>+</span>*/}
           {/*  <VercelIcon size={32} />*/}
           {/*</p>*/}
+          <p className="text-lg font-bold">
+            당신이 꿈꾸는 집은 어떤 모습인가요?<br/>친구들과 모여 웃음꽃을 피울 수 있는 공간이 필요한가요,<br/>아니면 혼자만의 조용한 안식처가 필요한가요?
+          </p>
           <p>
-            이 프로젝트는{' '}
-            <Link
-                className="font-medium underline underline-offset-4"
-                href="https://github.com/vercel/ai-chatbot"
-                target="_blank"
-            >
-              Christopher Alexander
-            </Link>
-            의 <i>Pattern Language</i> 이론을 바탕으로, 비전문가의 삶의 요구를 자연어로 입력받아 적합한 주거 평면도를 추천하는 AI 기반 시스템입니다. 평면도는 체계적으로 분석되어{' '}
+            우리의 AI 시스템은 당신의 일상과 감정, 삶의 방식을 자연어로 들려주시면, 그 이야기 속에서 당신에게 가장 적합한 주거 공간을 찾아드립니다. 복잡한 건축 용어를 몰라도 괜찮습니다. 당신의 삶에 대한 이야기만 들려주세요.
+          </p>
+          <p>
+            이 시스템은{' '}
             <Link
                 className="font-medium underline underline-offset-4"
                 href="https://neo4j.com"
@@ -38,10 +36,7 @@ export const Overview = () => {
             >
               Neo4j
             </Link>{' '}
-            그래프 데이터베이스에 저장됩니다.
-          </p>
-          <p>
-            이 시스템은 자연어 대화 → 구조화된 질문 → Cypher 쿼리 생성 → 추천의 흐름으로 작동합니다. 공간은 '기능'이 아니라 '삶의 패턴'을 중심으로 설계되어야 한다는 철학을 바탕으로, 비전문가도 쉽게 자신의 공간 요구를 표현하고 그에 맞는 평면도를 추천받을 수 있습니다.
+            그래프 데이터베이스에 저장된 평면도를 분석하여, 당신의 이야기에서 발견한 삶의 패턴과 가장 잘 어울리는 공간을 추천해 드립니다. 집은 단순한 '기능'의 집합이 아닌, 당신의 '삶의 패턴'이 자연스럽게 흐르는 곳이어야 하니까요.
           </p>
         </div>
       </motion.div>

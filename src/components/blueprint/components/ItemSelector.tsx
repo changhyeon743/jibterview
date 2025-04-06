@@ -169,7 +169,7 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({items, addItem}) => {
         }
     };
     return (
-        <div className="absolute bottom-4 left-0 right-0 flex justify-center z-50">
+        <div className="absolute bottom-4 right-4 flex justify-center z-50">
             <Sheet open={open} onOpenChange={setOpen}>
                 <SheetTrigger asChild>
                     <Button

@@ -24,17 +24,26 @@ import { Textarea } from '../ui/textarea';
 
 const suggestedActions = [
   {
-    title: 'What is the weather',
-    label: 'in San Francisco?',
-    action: 'What is the weather in San Francisco?',
+    title: '나는 이런 집을 꿈꿔요',
+    label: '친구들과 함께하는 공간',
+    action: '저는 혼자 살지만 친구들이 자주 놀러 오는 공간이 필요해요. 거실이 넓고 개방적인 곳이 좋을 것 같아요.',
   },
   {
-    title: 'Help me draft an essay',
-    label: 'about Silicon Valley',
-    action: 'Help me draft a short essay about Silicon Valley',
+    title: '이런 활동이 중요해요',
+    label: '요리와 식사 공간',
+    action: '저는 요리하는 것을 좋아하고 가끔 지인들을 초대해 함께 식사하는 시간을 가지고 싶어요. 주방과 식당이 연결된 공간이 있으면 좋겠어요.',
+  },
+  {
+    title: '제 라이프스타일은',
+    label: '재택근무와 취미 생활',
+    action: '저는 주로 재택근무를 하고 저녁에는 독서나 그림 그리기 같은 조용한 취미 활동을 즐겨요. 작업실 같은 공간이 있으면 좋겠어요.',
+  },
+  {
+    title: '이런 공간이 필요해요',
+    label: '휴식과 명상을 위한 곳',
+    action: '일상에서 벗어나 마음의 평화를 찾을 수 있는 조용한 공간이 필요해요. 자연 광이 잘 들어오고 외부 소음이 차단되는 곳이면 좋겠어요.',
   },
 ];
-
 export function MultimodalInput({
   chatId,
   input,
@@ -262,7 +271,7 @@ export function MultimodalInput({
 
       <Textarea
         ref={textareaRef}
-        placeholder="Send a message..."
+        placeholder="메시지를 입력하세요.."
         value={input}
         onChange={handleInput}
         className={cx(

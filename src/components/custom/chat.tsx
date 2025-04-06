@@ -3,7 +3,7 @@
 
 import { Attachment, Message } from 'ai';
 import { useChat } from 'ai/react';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence , motion } from 'framer-motion';
 import dynamic from "next/dynamic";
 import { useState, useEffect } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
@@ -13,7 +13,7 @@ import { PreviewMessage, ThinkingMessage } from '@/components/custom/message';
 import { useScrollToBottom } from '@/components/custom/use-scroll-to-bottom';
 import { useBlueprint } from '@/contexts/BlueprintContext';
 import { Database } from '@/lib/supabase/types';
-import { fetcher } from '@/lib/utils';
+import {cn, fetcher} from '@/lib/utils';
 
 import { Block, UIBlock } from './block';
 import { BlockStreamHandler } from './block-stream-handler';
@@ -83,7 +83,12 @@ export function Chat({
     return (
         <div className="flex flex-row h-dvh">
             {/* 채팅 영역 */}
-            <div className="flex flex-col w-1/2 min-w-0 h-full bg-background border-r">
+            <div
+                className={cn(
+                    "flex flex-col min-w-0 h-full bg-background border-r transition-all duration-500",
+                    messages.length > 0 ? "w-1/2" : "w-full"
+                )}
+            >
                 {/* 헤더 등 기존 코드 유지 */}
 
                 <div
@@ -129,9 +134,21 @@ export function Chat({
             </div>
 
             {/* Blueprint 영역 */}
-            <div className="w-1/2 h-full">
-                <DynamicBlueprint initialData={blueprintData} chatId={id} />
-            </div>
+            <AnimatePresence>
+                {messages.length > 0 && (
+                    <motion.div
+                        key="blueprint" // key 필수
+                        className="w-1/2 h-full"
+                        initial={{ x: '100%', opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        exit={{ x: '100%', opacity: 0 }}
+                        transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+                    >
+                        <DynamicBlueprint initialData={blueprintData} chatId={id} />
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
 
             {/* Block UI */}
             <AnimatePresence>

@@ -37,7 +37,7 @@ export function AppSidebar({ user }: { user: User | null }) {
               className="flex flex-row gap-3 items-center"
             >
               <span className="text-lg font-semibold px-2 hover:bg-muted rounded-md cursor-pointer">
-                거주에 대해 상상하기
+                공간 대화
               </span>
             </div>
             <BetterTooltip content="New Chat" align="start">
