@@ -10,18 +10,9 @@ import {
   Box3,
   FrontSide,
   MeshPhysicalMaterial,
-} from "three";
-import { Plane, Matrix4 } from "three";
-import {
-  EVENT_CHANGED,
-  EVENT_ROOM_ATTRIBUTES_CHANGED,
-  EVENT_MOVED,
-  EVENT_UPDATED,
-  EVENT_UPDATE_TEXTURES,
-  EVENT_CORNER_ATTRIBUTES_CHANGED,
-  EVENT_MODIFY_TEXTURE_ATTRIBUTE,
-} from "../core/events.js";
-import { Region } from "../core/utils.js";
+ Plane, Matrix4 , BufferGeometry } from "three";
+
+import { HalfEdge } from "./half_edge.js";
 import {
   WallTypes,
   TEXTURE_DEFAULT_REPEAT,
@@ -32,10 +23,16 @@ import {
   TEXTURE_PROPERTY_REFLECTIVE,
   TEXTURE_PROPERTY_SHININESS,
 } from "../core/constants.js";
-// import { / } from '../core/constants';
-import { Utils } from "../core/utils.js";
-import { HalfEdge } from "./half_edge.js";
-import { BufferGeometry } from "three";
+import {
+  EVENT_CHANGED,
+  EVENT_ROOM_ATTRIBUTES_CHANGED,
+  EVENT_MOVED,
+  EVENT_UPDATED,
+  EVENT_UPDATE_TEXTURES,
+  EVENT_CORNER_ATTRIBUTES_CHANGED,
+  EVENT_MODIFY_TEXTURE_ATTRIBUTE,
+} from "../core/events.js";
+import { Region, Utils } from "../core/utils.js";
 /** Default texture to be used if nothing is provided. */
 export const defaultRoomTexture = {
   url: "rooms/textures/hardwood.png",
@@ -815,4 +812,3 @@ export class Room extends EventDispatcher {
     return this._name;
   }
 }
-export default Room;

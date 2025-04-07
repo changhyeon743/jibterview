@@ -1,20 +1,10 @@
-import { Color, Vector2 } from "three";
-import { BoxBufferGeometry } from "three";
-import { Mesh, Object3D, Raycaster } from "three";
-import { BoxGeometry } from "three";
-import { MeshBasicMaterial } from "three";
-import { MeshLambertMaterial } from "three";
-import { SpriteMaterial } from "three";
-import { Sprite } from "three";
-import { Group } from "three";
-import { MeshStandardMaterial } from "three";
-import { CanvasTexture } from "three";
-import { ArrowHelper, Matrix4, Vector3 } from "three";
+import { Color, Vector2 , BoxBufferGeometry , Mesh, Object3D, Raycaster , BoxGeometry , MeshBasicMaterial , MeshLambertMaterial , SpriteMaterial , Sprite , Group , MeshStandardMaterial , CanvasTexture , ArrowHelper, Matrix4, Vector3 } from "three";
 import {
   CSS2DRenderer,
   CSS2DObject,
 } from "three/examples/jsm/renderers/CSS2DRenderer.js";
 import { computeMikkTSpaceTangents } from "three/examples/jsm/utils/BufferGeometryUtils";
+
 import {
   configDimUnit,
   Configuration,

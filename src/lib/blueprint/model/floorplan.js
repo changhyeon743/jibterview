@@ -1,34 +1,11 @@
-import {
-  EVENT_UPDATED,
-  EVENT_LOADED,
-  EVENT_NEW,
-  EVENT_DELETED,
-  EVENT_ROOM_NAME_CHANGED,
-  EVENT_MODE_RESET,
-  EVENT_EXTERNAL_FLOORPLAN_LOADED,
-} from "../core/events.js";
-import {
-  EVENT_CORNER_ATTRIBUTES_CHANGED,
-  EVENT_WALL_ATTRIBUTES_CHANGED,
-  EVENT_ROOM_ATTRIBUTES_CHANGED,
-  EVENT_MOVED,
-  EVENT_NEW_ROOMS_ADDED,
-} from "../core/events.js";
 import { EventDispatcher, Vector2, Vector3, Matrix4 } from "three";
-import { Utils } from "../core/utils.js";
-import { Dimensioning } from "../core/dimensioning.js";
-import {
-  dimInch,
-  dimFeet,
-  dimFeetAndInch,
-  dimMeter,
-  dimCentiMeter,
-  dimMilliMeter,
-  defaultWallTexture,
-  defaultFloorTexture,
-} from "../core/constants.js";
-import { WallTypes } from "../core/constants.js";
-import { Version } from "../core/version.js";
+
+import Boundary from "./boundary.js";
+import { Corner } from "./corner.js";
+import { CornerGroups } from "./cornergroups.js";
+import { HalfEdge } from "./half_edge.js";
+import { Room } from "./room.js";
+import { Wall } from "./wall.js";
 import {
   cornerTolerance,
   Configuration,
@@ -38,13 +15,33 @@ import {
   roofShadowVisible,
   magneticSnap,
 } from "../core/configuration.js";
-
-import { HalfEdge } from "./half_edge.js";
-import { Corner } from "./corner.js";
-import { Wall } from "./wall.js";
-import { Room } from "./room.js";
-import { CornerGroups } from "./cornergroups.js";
-import Boundary from "./boundary.js";
+import {
+  dimInch,
+  dimFeet,
+  dimFeetAndInch,
+  dimMeter,
+  dimCentiMeter,
+  dimMilliMeter,
+  defaultWallTexture,
+  defaultFloorTexture,
+ WallTypes } from "../core/constants.js";
+import { Dimensioning } from "../core/dimensioning.js";
+import {
+  EVENT_UPDATED,
+  EVENT_LOADED,
+  EVENT_NEW,
+  EVENT_DELETED,
+  EVENT_ROOM_NAME_CHANGED,
+  EVENT_MODE_RESET,
+  EVENT_EXTERNAL_FLOORPLAN_LOADED,
+  EVENT_CORNER_ATTRIBUTES_CHANGED,
+  EVENT_WALL_ATTRIBUTES_CHANGED,
+  EVENT_ROOM_ATTRIBUTES_CHANGED,
+  EVENT_MOVED,
+  EVENT_NEW_ROOMS_ADDED,
+} from "../core/events.js";
+import { Utils } from "../core/utils.js";
+import { Version } from "../core/version.js";
 //import { Viewer2D } from '../viewer2d/Viewer2D.js';
 
 // @orchestra blueprint

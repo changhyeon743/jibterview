@@ -15,16 +15,27 @@ import {
     Box3,
     DirectionalLightHelper,
     CameraHelper,
-} from "three";
-import {
     PCFSoftShadowMap,
     WebGLCubeRenderTarget,
     CubeCamera,
     MathUtils,
-    NoToneMapping,
+    NoToneMapping,Vector3
 } from "three";
+import {TrackballControls} from "three/addons/controls/TrackballControls.js";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls.js";
 import {GLTFExporter} from "three/examples/jsm/exporters/GLTFExporter";
+import {CSS2DRenderer} from "three/examples/jsm/renderers/CSS2DRenderer.js";
+
+import {DragRoomItemsControl3D} from "./DragRoomItemsControl3D.js";
+import {Edge3D} from "./edge3d.js";
+import {Floor3D} from "./floor3d.js";
+import {Physical3DItem} from "./Physical3DItem.js";
+import {Skybox} from "./skybox.js";
+import {
+    Configuration,
+    viewBounds,
+    shadowVisible,
+} from "../core/configuration.js";
 import {
     EVENT_ITEM_UPDATE,
     EVENT_ITEM_REMOVED,
@@ -43,20 +54,8 @@ import {
     EVENT_UPDATED,
     EVENT_WALLS_COMPLETED,
 } from "../core/events.js";
-import {Skybox} from "./skybox.js";
-import {Edge3D} from "./edge3d.js";
-import {Floor3D} from "./floor3d.js";
-import {Physical3DItem} from "./Physical3DItem.js";
-import {DragRoomItemsControl3D} from "./DragRoomItemsControl3D.js";
-import {
-    Configuration,
-    viewBounds,
-    shadowVisible,
-} from "../core/configuration.js";
 import {ConfigurationHelper} from "../helpers/ConfigurationHelper";
-import {CSS2DRenderer} from "three/examples/jsm/renderers/CSS2DRenderer.js";
-import {Vector3} from "three";
-import {TrackballControls} from "three/addons/controls/TrackballControls.js";
+
 // @orchestra blueprint
 
 export const states = {

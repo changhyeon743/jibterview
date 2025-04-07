@@ -1,4 +1,5 @@
 //@orchestra blueprint
+import gsap from "gsap";
 import {
   EventDispatcher,
   Vector2,
@@ -17,9 +18,16 @@ import {
   LineSegments,
   LineBasicMaterial,
   EdgesGeometry,
-} from "three";
+ BufferGeometry } from "three";
+
 // import { SubdivisionModifier } from 'three/examples/jsm/modifiers/SubdivisionModifier';
-import { Utils } from "../core/utils.js";
+import {
+  TEXTURE_PROPERTY_COLOR,
+  TEXTURE_PROPERTY_REPEAT,
+  TEXTURE_PROPERTY_ROTATE,
+  TEXTURE_PROPERTY_REFLECTIVE,
+  TEXTURE_PROPERTY_SHININESS,
+} from "../core/constants.js";
 import {
   EVENT_REDRAW,
   EVENT_UPDATE_TEXTURES,
@@ -29,16 +37,8 @@ import {
   EVENT_NEW_ITEM,
   EVENT_ITEM_REMOVED,
 } from "../core/events.js";
+import { Utils } from "../core/utils.js";
 import { WallMaterial3D } from "../materials/WallMaterial3D.js";
-import {
-  TEXTURE_PROPERTY_COLOR,
-  TEXTURE_PROPERTY_REPEAT,
-  TEXTURE_PROPERTY_ROTATE,
-  TEXTURE_PROPERTY_REFLECTIVE,
-  TEXTURE_PROPERTY_SHININESS,
-} from "../core/constants.js";
-import { BufferGeometry } from "three";
-import gsap from "gsap";
 
 export class Edge3D extends EventDispatcher {
   constructor(scene, edge, controls, opts) {

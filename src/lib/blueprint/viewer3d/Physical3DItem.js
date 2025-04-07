@@ -1,3 +1,4 @@
+import { gsap, Power0 } from "gsap";
 import {
   Mesh,
   FontLoader,
@@ -29,8 +30,18 @@ import {
   Plane,
   CompressedPixelFormat,
   Euler,
-} from "three";
+
+  BoxGeometry,
+  LineBasicMaterial,
+  LineSegments,
+  EdgesGeometry,
+  ObjectLoader,
+  Vector2} from "three";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+
+import { ItemStatistics3D } from "./ItemStatistics3D";
+import { Configuration, shadowVisible } from "../core/configuration.js";
 import {
   EVENT_ITEM_LOADED,
   EVENT_ITEM_LOADING,
@@ -39,23 +50,12 @@ import {
   EVENT_ITEM_REMOVED,
 } from "../core/events";
 import { Utils } from "../core/utils";
-import {
-  BoxGeometry,
-  LineBasicMaterial,
-  LineSegments,
-  EdgesGeometry,
-  ObjectLoader,
-  Vector2,
-} from "three";
-import { FloorMaterial3D } from "../materials/FloorMaterial3D";
 import { ConfigurationHelper } from "../helpers/ConfigurationHelper";
-import { Configuration, shadowVisible } from "../core/configuration.js";
-import { gsap, Power0 } from "gsap";
-import { WallFloorItem } from "../items/wall_floor_item";
-import { InWallItem } from "../items/in_wall_item";
 import { InWallFloorItem } from "../items/in_wall_floor_item";
-import { ItemStatistics3D } from "./ItemStatistics3D";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader";
+import { InWallItem } from "../items/in_wall_item";
+import { WallFloorItem } from "../items/wall_floor_item";
+import { FloorMaterial3D } from "../materials/FloorMaterial3D";
+
 
 // import { Group } from "three/build/three.module";
 // @orchestra blueprint

@@ -3,7 +3,7 @@
 'use client';
 
 import { AlertCircle, CheckCircle, Code, Play } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import {useCallback, useEffect, useState} from 'react';
 
 import { Button } from '@/components/ui/button';
 import { useBlueprint } from '@/contexts/BlueprintContext';
@@ -21,7 +21,7 @@ export function BlueprintREPL({ code, onExecutionComplete }: BlueprintREPLProps)
 
     const { blueprint } = useBlueprint();
 
-    const executeCode = async () => {
+    const executeCode = useCallback(async () => {
         if (!blueprint || !code.trim()) return;
 
         setIsExecuting(true);
@@ -62,13 +62,13 @@ export function BlueprintREPL({ code, onExecutionComplete }: BlueprintREPLProps)
         } finally {
             setIsExecuting(false);
         }
-    };
+    }, [blueprint, code, onExecutionComplete]);
 
     useEffect(() => {
         if (code && blueprint) {
             executeCode();
         }
-    }, [code, blueprint]);
+    }, [code, blueprint, executeCode]);
 
     if (!code) return null;
 

@@ -9,6 +9,18 @@ import {
   BufferGeometry,
   Plane,
 } from "three";
+
+import {
+  WallTypes,
+  TEXTURE_DEFAULT_REPEAT,
+  TEXTURE_PROPERTY_REPEAT,
+  TEXTURE_PROPERTY_COLOR,
+  TEXTURE_PROPERTY_ROTATE,
+  TEXTURE_PROPERTY_REFLECTIVE,
+  TEXTURE_PROPERTY_SHININESS,
+  WALL_STANDARD_THICKNESS,
+  WALL_OFFSET_THICKNESS,
+} from "../core/constants.js";
 import {
   EVENT_REDRAW,
   EVENT_MOVED,
@@ -22,17 +34,6 @@ import {
   EVENT_ITEM_MOVE,
 } from "../core/events.js";
 import { Utils } from "../core/utils.js";
-import {
-  WallTypes,
-  TEXTURE_DEFAULT_REPEAT,
-  TEXTURE_PROPERTY_REPEAT,
-  TEXTURE_PROPERTY_COLOR,
-  TEXTURE_PROPERTY_ROTATE,
-  TEXTURE_PROPERTY_REFLECTIVE,
-  TEXTURE_PROPERTY_SHININESS,
-  WALL_STANDARD_THICKNESS,
-  WALL_OFFSET_THICKNESS,
-} from "../core/constants.js";
 
 /**
  * Half Edges are created by Room.

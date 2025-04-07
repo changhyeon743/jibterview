@@ -6,13 +6,13 @@ import {
   Vector2,
   sRGBEncoding,
   CubeReflectionMapping,
-} from "three";
+ MeshPhysicalMaterial } from "three";
+
 import {
   TEXTURE_DEFAULT_REPEAT,
   TEXTURE_DEFAULT_REFLECTIVE,
   TEXTURE_DEFAULT_SHININESS,
 } from "../core/constants";
-import { MeshPhysicalMaterial } from "three";
 
 export class Material3D extends MeshPhysicalMaterial {
   constructor(parameters, textureMapPack, scene, reflectsScene = false) {

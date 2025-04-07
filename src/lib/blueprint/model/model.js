@@ -1,5 +1,8 @@
 // @ts-nocheck
 //@orchestra blueprint
+import { EventDispatcher, Vector3 } from "three";
+
+import { Floorplan } from "./floorplan.js";
 import {
   EVENT_LOADED,
   EVENT_ROTATE_SELECTED,
@@ -12,8 +15,6 @@ import {
   EVENT_EXTERNAL_FLOORPLAN_LOADED,
   EVENT_ITEM_UPDATE,
 } from "../core/events.js";
-import { EventDispatcher, Vector3 } from "three";
-import { Floorplan } from "./floorplan.js";
 import { Utils } from "../core/utils.js";
 import { Factory, item_types } from "../items/factory.js";
 import { FloorItem } from "../items/floor_item";

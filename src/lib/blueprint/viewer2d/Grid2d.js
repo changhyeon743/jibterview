@@ -1,8 +1,9 @@
-import { Configuration, gridSpacing, viewBounds } from "../core/configuration";
-import { EVENT_CHANGED } from "../core/events";
 import { Graphics } from "pixi.js";
 import { Vector2 } from "three";
+
+import { Configuration, gridSpacing, viewBounds } from "../core/configuration";
 import { Dimensioning } from "../core/dimensioning";
+import { EVENT_CHANGED } from "../core/events";
 
 const GRID_SIZE = 1000;
 

@@ -1,15 +1,7 @@
-import { BaseFloorplanViewElement2D } from "./BaseFloorplanViewElement2D.js";
-import {
-  EVENT_MOVED,
-  EVENT_UPDATED,
-  EVENT_DELETED,
-  EVENT_CHANGED,
-  EVENT_NEW_ITEM,
-  EVENT_ITEM_REMOVED,
-} from "../core/events.js";
-import { Dimensioning } from "../core/dimensioning.js";
 import { Graphics, Text, Point } from "pixi.js";
 import { Vector3, Vector2, Color } from "three";
+
+import { BaseFloorplanViewElement2D } from "./BaseFloorplanViewElement2D.js";
 import {
   Configuration,
   snapToGrid,
@@ -18,6 +10,15 @@ import {
   dragOnlyY,
   directionalDrag,
 } from "../core/configuration.js";
+import { Dimensioning } from "../core/dimensioning.js";
+import {
+  EVENT_MOVED,
+  EVENT_UPDATED,
+  EVENT_DELETED,
+  EVENT_CHANGED,
+  EVENT_NEW_ITEM,
+  EVENT_ITEM_REMOVED,
+} from "../core/events.js";
 // import { isMobile } from 'detect-touch-device';
 
 export class WallDimensions2D extends Graphics {

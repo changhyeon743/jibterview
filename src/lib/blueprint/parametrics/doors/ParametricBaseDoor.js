@@ -6,11 +6,11 @@ import {
   DoubleSide,
   Color,
   BufferGeometryUtils,
-} from "three";
+ EventDispatcher } from "three";
 import { mergeBufferGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import { EventDispatcher } from "three";
-import { EVENT_PARAMETRIC_GEOMETRY_UPATED } from "../../core/events";
+
 import { DoorHandleGenerator } from "./doorhandles/DoorHandleGenerator";
+import { EVENT_PARAMETRIC_GEOMETRY_UPATED } from "../../core/events";
 import { Material3D } from "../../materials/Material3D";
 
 export const DOOR_OPEN_DIRECTIONS = Enum(

@@ -1,11 +1,11 @@
 import { Configuration, configDimUnit } from "./core/configuration";
 import { dimCentiMeter } from "./core/constants";
-import { Model } from "./model/model";
-import { Viewer3D } from "./viewer3d/Viewer3d";
-import { Viewer2D, floorplannerModes } from "./viewer2d/Viewer2D";
 import { ConfigurationHelper } from "./helpers/ConfigurationHelper";
 import { FloorPlannerHelper } from "./helpers/FloorplannerHelper";
 import { RoomPlannerHelper } from "./helpers/RoomplannerHelper";
+import { Model } from "./model/model";
+import { Viewer2D, floorplannerModes } from "./viewer2d/Viewer2D";
+import { Viewer3D } from "./viewer3d/Viewer3d";
 // @orchestra blueprint
 
 ///** BlueprintJS core application. */

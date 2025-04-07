@@ -1,5 +1,6 @@
-import { InWallItem } from "./in_wall_item.js";
 import { Vector2, Vector3, Matrix4 } from "three";
+
+import { InWallItem } from "./in_wall_item.js";
 import { UP_VECTOR } from "./item.js";
 import { Utils } from "../core/utils.js";
 // @orchestra blueprint

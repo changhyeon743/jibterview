@@ -1,7 +1,8 @@
-import { WallItem } from "./wall_item.js";
 import { Matrix4, Vector2, Vector3, Plane, Quaternion } from "three";
-import { Utils } from "../core/utils.js";
+
 import { UP_VECTOR } from "./item.js";
+import { WallItem } from "./wall_item.js";
+import { Utils } from "../core/utils.js";
 // @orchestra blueprint
 
 /** */

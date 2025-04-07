@@ -1,12 +1,13 @@
+import { Text } from "pixi.js";
+import { Vector2 } from "three";
+
 import { BaseFloorplanViewElement2D } from "./BaseFloorplanViewElement2D.js";
+import { Configuration } from "../core/configuration.js";
+import { Dimensioning } from "../core/dimensioning.js";
 import {
   EVENT_ROOM_ATTRIBUTES_CHANGED,
   EVENT_CHANGED,
 } from "../core/events.js";
-import { Dimensioning } from "../core/dimensioning.js";
-import { Configuration } from "../core/configuration.js";
-import { Vector2 } from "three";
-import { Text } from "pixi.js";
 
 export class RoomView2D extends BaseFloorplanViewElement2D {
   constructor(floorplan, options, room) {

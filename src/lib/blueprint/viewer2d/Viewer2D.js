@@ -1,9 +1,24 @@
 "use client";
 // @orchestra blueprint
 
-import { Application, Graphics, Text } from "pixi.js";
 import { Viewport } from "pixi-viewport";
+import { Application, Graphics, Text } from "pixi.js";
 import { Vector2, EventDispatcher, CompressedPixelFormat } from "three";
+
+import { BoundaryView2D } from "./BoundaryView2D";
+import { CornerGroupTransform2D } from "./CornerGroupTransform2D";
+import { CornerView2D } from "./CornerView2D";
+import { Grid2D } from "./Grid2d";
+import { KeyboardListener2D } from "./KeyboardManager2D";
+import { RoomView2D } from "./RoomView2D";
+import { WallView2D } from "./WallView2D";
+import {
+  Configuration,
+  snapToGrid,
+  snapTolerance,
+  viewBounds,
+} from "../core/configuration";
+import { Dimensioning } from "../core/dimensioning";
 import {
   EVENT_NEW,
   EVENT_DELETED,
@@ -20,22 +35,8 @@ import {
   EVENT_MODE_RESET,
   EVENT_EXTERNAL_FLOORPLAN_LOADED,
 } from "../core/events";
-import { Grid2D } from "./Grid2d";
-import { CornerView2D } from "./CornerView2D";
-import { WallView2D } from "./WallView2D";
-import { RoomView2D } from "./RoomView2D";
-import { Dimensioning } from "../core/dimensioning";
-import { KeyboardListener2D } from "./KeyboardManager2D";
-import {
-  Configuration,
-  snapToGrid,
-  snapTolerance,
-  viewBounds,
-} from "../core/configuration";
 import { IS_TOUCH_DEVICE } from "../DeviceInfo";
-import { CornerGroupTransform2D } from "./CornerGroupTransform2D";
-import Room from "../model/room";
-import { BoundaryView2D } from "./BoundaryView2D";
+import {Room} from "../model/room";
 
 export const floorplannerModes = { MOVE: 0, DRAW: 1, EDIT_ISLANDS: 2 };
 

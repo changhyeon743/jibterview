@@ -2,9 +2,10 @@
 // @orchestra blueprint
 
 import { NextResponse } from 'next/server';
+
+import { saveChat } from '@/db/mutations';
 import { createClient } from '@/lib/supabase/server';
 import { generateUUID } from '@/lib/utils';
-import { saveChat } from '@/db/mutations';
 
 // 채팅 존재 여부 확인 함수
 async function ensureChatExists(chatId: string, userId: string, supabase: any) {

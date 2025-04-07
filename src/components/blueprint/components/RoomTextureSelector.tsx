@@ -1,14 +1,16 @@
 "use client";
-import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import * as wall_textures from "../wall_textures.json";
-import * as floor_textures from "../floor_textures.json";
+import React, { useState, useEffect } from "react";
+
 import { Texture } from "@/components/blueprint/types";
 import {
   EVENT_NO_ITEM_SELECTED,
   EVENT_ROOM_CLICKED,
   EVENT_WALL_CLICKED,
 } from "@/lib/blueprint/core/events";
+
+import * as floor_textures from "../floor_textures.json";
+import * as wall_textures from "../wall_textures.json";
 // @orchestra blueprint
 
 interface RoomTextureSelectorProps {
@@ -157,7 +159,7 @@ const RoomTextureSelector: React.FC<RoomTextureSelectorProps> = ({
             <button
               key={index}
               onClick={() => changeColor(color.value)}
-              className="w-6 h-6 rounded-full border border-gray-300"
+              className="size-6 rounded-full border border-gray-300"
               style={{ backgroundColor: color.value }}
               title={color.name}
             />

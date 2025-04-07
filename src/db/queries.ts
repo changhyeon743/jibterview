@@ -1,4 +1,5 @@
 import { AuthError } from '@supabase/supabase-js';
+
 import type { Client, Database } from '../lib/supabase/types';
 
 type Tables = Database['public']['Tables'];

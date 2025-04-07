@@ -1,14 +1,15 @@
 //@orchestra blueprint
+import { ChevronUp, ChevronDown, Minimize2, Maximize2 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { Vector3 } from "three";
-import { Physical3DItem } from "@/lib/blueprint/viewer3d/Physical3DItem";
-import { ChevronUp, ChevronDown, Minimize2, Maximize2 } from "lucide-react";
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"; // shadcn/ui
+import { Physical3DItem } from "@/lib/blueprint/viewer3d/Physical3DItem";
 
 interface ItemEditorProps {
   selectedItem: Physical3DItem | null;
@@ -108,10 +109,10 @@ const ItemEditor: React.FC<ItemEditorProps> = ({
             {!minimized && <p className="text-gray-700 text-[10px] mr-2 truncate max-w-[150px]">{selectedItem.name}</p>}
             <button
                 onClick={toggleMinimize}
-                className="bg-gray-100 hover:bg-gray-200 p-1 rounded-full transition-all flex-shrink-0"
+                className="bg-gray-100 hover:bg-gray-200 p-1 rounded-full transition-all shrink-0"
                 aria-label={minimized ? "Expand" : "Minimize"}
             >
-              {minimized ? <Maximize2 className="w-3 h-3" /> : <Minimize2 className="w-3 h-3" />}
+              {minimized ? <Maximize2 className="size-3" /> : <Minimize2 className="size-3" />}
             </button>
           </div>
         </div>
@@ -176,19 +177,19 @@ const ItemEditor: React.FC<ItemEditorProps> = ({
                           step="1"
                           value={itemPositionY}
                           onChange={(e) => handleYPositionChange(parseFloat(e.target.value))}
-                          className="flex-grow"
+                          className="grow"
                       />
                       <button
                           onClick={() => moveItemY(10)}
                           className="bg-gray-200 hover:bg-gray-300 p-1 rounded"
                       >
-                        <ChevronUp className="w-3 h-3" />
+                        <ChevronUp className="size-3" />
                       </button>
                       <button
                           onClick={() => moveItemY(-10)}
                           className="bg-gray-200 hover:bg-gray-300 p-1 rounded"
                       >
-                        <ChevronDown className="w-3 h-3" />
+                        <ChevronDown className="size-3" />
                       </button>
                     </div>
                   </AccordionContent>

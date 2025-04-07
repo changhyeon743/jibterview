@@ -1,4 +1,5 @@
 import Enum from "es6-enum";
+
 import { DoorFactory } from "./doors/DoorFactory";
 
 export const TYPE_DOOR = "DOOR";

@@ -1,18 +1,19 @@
+import { EventDispatcher, Vector2 } from "three";
+
+import {
+  Configuration,
+  configWallHeight,
+  cornerTolerance,
+} from "../core/configuration.js";
+import { WallTypes } from "../core/constants.js";
 import {
   EVENT_ACTION,
   EVENT_DELETED,
   EVENT_MOVED,
   EVENT_CORNER_ATTRIBUTES_CHANGED,
 } from "../core/events.js";
-import { EventDispatcher, Vector2 } from "three";
 import { Utils } from "../core/utils.js";
-import { WallTypes } from "../core/constants.js";
 //import {Dimensioning} from '../core/dimensioning.js';
-import {
-  Configuration,
-  configWallHeight,
-  cornerTolerance,
-} from "../core/configuration.js";
 
 /**
  * Corners are used to define Walls.
@@ -728,4 +729,3 @@ export class Corner extends EventDispatcher {
     }
   }
 }
-export default Corner;

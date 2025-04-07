@@ -2,10 +2,10 @@
 
 import dynamic from "next/dynamic";
 import { useState } from "react";
+
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import {FloorPlannerData} from "@/types/floorplanner";
 
 const DynamicBlueprint = dynamic(
     () => import("@/components/blueprint/Blueprint3D"),
@@ -17,7 +17,7 @@ export default function Home() {
     const [error, setError] = useState("");
     const [validatedData, setValidatedData] = useState<string | null>(null);
 
-    const validateBlueprintJson = (jsonString: string): FloorPlannerData => {
+    const validateBlueprintJson = (jsonString: string): any => {
         try {
             const parsed = JSON.parse(jsonString);
 
@@ -47,7 +47,7 @@ export default function Home() {
                 throw new Error("items는 배열이어야 합니다.");
             }
 
-            return parsed as FloorPlannerData;
+            return parsed as any;
         } catch (e) {
             if (e instanceof SyntaxError) {
                 throw new Error("올바른 JSON 형식이 아닙니다.");

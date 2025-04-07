@@ -8,12 +8,11 @@ import {
   DoubleSide,
   PlaneGeometry,
   MeshStandardMaterial,
-} from "three";
-import {
+
   AxesHelper,
   EquirectangularReflectionMapping,
-  sRGBEncoding,
-} from "three";
+  sRGBEncoding} from "three";
+
 import { Configuration, gridSpacing, viewBounds } from "../core/configuration";
 import { EVENT_CHANGED } from "../core/events";
 

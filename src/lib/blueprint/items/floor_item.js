@@ -1,5 +1,6 @@
-import { Item, UP_VECTOR } from "./item.js";
 import { Vector2, Vector3 } from "three";
+
+import { Item, UP_VECTOR } from "./item.js";
 import { Utils } from "../core/utils.js";
 // @orchestra blueprint
 

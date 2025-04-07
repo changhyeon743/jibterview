@@ -1,6 +1,5 @@
-import { Vector3, Vector2 } from "three";
-import { MathUtils as THREEMath } from "three";
 import { checkIntersection } from "line-intersect";
+import { Vector3, Vector2 , MathUtils as THREEMath } from "three";
 
 export const RIGHT = new Vector3(1, 0, 0);
 export const FORWARD = new Vector3(0, 0, 1);

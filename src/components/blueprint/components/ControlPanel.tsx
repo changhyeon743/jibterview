@@ -3,7 +3,7 @@
 import {
     Cuboid, Pencil, Move, Scissors, Trash, Download, Upload, Camera, Eye, Box
 } from "lucide-react";
-import React, { useRef } from "react";
+import {useRef, useState} from "react";
 
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -37,7 +37,7 @@ const TooltipButton = ({
                     disabled={disabled}
                     className={`h-8 px-2 flex items-center gap-1.5 ${className}`}
                 >
-                    <Icon className="w-4 h-4" />
+                    <Icon className="size-4" />
                     <span className="text-xs">{label}</span>
                 </Button>
             </TooltipTrigger>
@@ -61,9 +61,9 @@ const ControlPanel = ({
                           roomName,
                           setRoomName,
                       }) => {
-    const [is2DMode, setIs2DMode] = React.useState(false);
-    const [isPerspective, setIsPerspective] = React.useState(false);
-    const [isRealistic, setIsRealistic] = React.useState(true);
+    const [is2DMode, setIs2DMode] = useState(false);
+    const [isPerspective, setIsPerspective] = useState(false);
+    const [isRealistic, setIsRealistic] = useState(true);
     const fileInputRef = useRef(null);
 
     const toggleRenderingMode = () => {

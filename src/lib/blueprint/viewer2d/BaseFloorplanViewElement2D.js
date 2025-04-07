@@ -1,13 +1,14 @@
-import { EventDispatcher, Vector2 } from "three";
 import { Graphics } from "pixi.js";
+import { EventDispatcher, Vector2 } from "three";
+
+import { KeyboardListener2D } from "./KeyboardManager2D";
+import { Dimensioning } from "../core/dimensioning";
 import {
   EVENT_2D_SELECTED,
   EVENT_2D_UNSELECTED,
   EVENT_KEY_RELEASED,
   EVENT_KEY_PRESSED,
 } from "../core/events";
-import { KeyboardListener2D } from "./KeyboardManager2D";
-import { Dimensioning } from "../core/dimensioning";
 
 export class BaseFloorplanViewElement2D extends Graphics {
   constructor(floorplan, options) {

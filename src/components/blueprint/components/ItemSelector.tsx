@@ -1,10 +1,11 @@
 'use client'
-import React, {useState, useMemo, useEffect} from "react";
-import {Item} from "../types";
 import {Loader2, ChevronLeft, ChevronRight} from "lucide-react";
+import Image from "next/image";
+import React, {useState, useMemo, useEffect} from "react";
+
 import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
 import {Card, CardContent} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
 import {ScrollArea, ScrollBar} from "@/components/ui/scroll-area";
 import {
     Sheet,
@@ -13,6 +14,8 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
+
+import {Item} from "../types";
 // @orchestra blueprint
 
 interface ItemSelectorProps {
@@ -105,10 +108,10 @@ const ImageThumbnail = ({
         >
             {isLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-muted rounded-md">
-                    <Loader2 className="w-6 h-6 animate-spin"/>
+                    <Loader2 className="size-6 animate-spin"/>
                 </div>
             )}
-            <img
+            <Image
                 key={`${itemName}-${retryCount}`}
                 src={imageUrl}
                 alt={itemName}
@@ -194,7 +197,7 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({items, addItem}) => {
                                     onClick={prevPage}
                                     disabled={currentPage === 0}
                                 >
-                                    <ChevronLeft className="w-4 h-4"/>
+                                    <ChevronLeft className="size-4"/>
                                 </Button>
                                 <span className="text-sm text-muted-foreground">
                   {currentPage + 1} / {totalPages}
@@ -205,7 +208,7 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({items, addItem}) => {
                                     onClick={nextPage}
                                     disabled={currentPage >= totalPages - 1}
                                 >
-                                    <ChevronRight className="w-4 h-4"/>
+                                    <ChevronRight className="size-4"/>
                                 </Button>
                             </div>
                         </div>
@@ -222,7 +225,7 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({items, addItem}) => {
                                             setSelectedCategory(category);
                                             setCurrentPage(0);
                                         }}
-                                        className="flex-shrink-0"
+                                        className="shrink-0"
                                     >
                                         {category === "전체"
                                             ? "전체"
@@ -247,7 +250,7 @@ const ItemSelector: React.FC<ItemSelectorProps> = ({items, addItem}) => {
                             {currentItems.map((item, index) => (
                                 <Card key={index}>
                                     <CardContent className="p-3 flex flex-col items-center">
-                                        <div className="w-20 h-20 relative mb-2">
+                                        <div className="size-20 relative mb-2">
                                             <ImageThumbnail
                                                 itemName={item.itemName}
                                                 width={80}

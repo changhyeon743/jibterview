@@ -1,7 +1,6 @@
-import { BaseFloorplanViewElement2D } from "./BaseFloorplanViewElement2D.js";
-import { Dimensioning } from "../core/dimensioning.js";
-import { EVENT_MOVED, EVENT_DELETED } from "../core/events.js";
 import { Point } from "pixi.js";
+
+import { BaseFloorplanViewElement2D } from "./BaseFloorplanViewElement2D.js";
 import {
   Configuration,
   snapTolerance,
@@ -9,6 +8,8 @@ import {
   dragOnlyX,
   dragOnlyY,
 } from "../core/configuration.js";
+import { Dimensioning } from "../core/dimensioning.js";
+import { EVENT_MOVED, EVENT_DELETED } from "../core/events.js";
 // import { isMobile } from 'detect-touch-device';
 
 // import {pointPolygon, pointBox} from 'intersects';

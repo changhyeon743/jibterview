@@ -22,14 +22,8 @@ import {
   BufferGeometry,
   Float32BufferAttribute,
   Box3,
-} from "three";
-import {
-  EVENT_CHANGED,
-  EVENT_UPDATE_TEXTURES,
-  EVENT_ROOM_ATTRIBUTES_CHANGED,
-  EVENT_MODIFY_TEXTURE_ATTRIBUTE,
-} from "../core/events.js";
-import { FloorMaterial3D } from "../materials/FloorMaterial3D.js";
+ HemisphereLight, HemisphereLightHelper } from "three";
+
 import {
   TEXTURE_PROPERTY_COLOR,
   TEXTURE_PROPERTY_REPEAT,
@@ -37,8 +31,14 @@ import {
   TEXTURE_PROPERTY_REFLECTIVE,
   TEXTURE_PROPERTY_SHININESS,
 } from "../core/constants.js";
+import {
+  EVENT_CHANGED,
+  EVENT_UPDATE_TEXTURES,
+  EVENT_ROOM_ATTRIBUTES_CHANGED,
+  EVENT_MODIFY_TEXTURE_ATTRIBUTE,
+} from "../core/events.js";
 import { Utils } from "../core/utils.js";
-import { HemisphereLight, HemisphereLightHelper } from "three";
+import { FloorMaterial3D } from "../materials/FloorMaterial3D.js";
 
 export class Floor3D extends EventDispatcher {
   constructor(scene, room, controls, opts) {

@@ -1,5 +1,6 @@
-import { EventDispatcher, Vector3, Vector2 } from "three";
-import { Quaternion, Euler } from "three";
+import { EventDispatcher, Vector3, Vector2 , Quaternion, Euler } from "three";
+
+import { Configuration, magneticSnap } from "../core/configuration.js";
 import {
   EVENT_UPDATED,
   EVENT_PARAMETRIC_GEOMETRY_UPATED,
@@ -12,7 +13,6 @@ import {
   BASE_PARAMETRIC_TYPES,
   ParametricFactory,
 } from "../parametrics/ParametricFactory";
-import { Configuration, magneticSnap } from "../core/configuration.js";
 export const UP_VECTOR = new Vector3(0, 1, 0);
 // @orchestra blueprint
 

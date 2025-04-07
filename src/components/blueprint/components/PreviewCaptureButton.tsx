@@ -1,10 +1,11 @@
 "use client"
 //@orchestra blueprint
 
-import React, { useState } from 'react';
 import { ImageDown, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import React, { useState } from 'react';
 import { Box3, Vector3, OrthographicCamera } from 'three';
+
+import { Button } from '@/components/ui/button';
 import {
     Tooltip,
     TooltipContent,
@@ -158,12 +159,12 @@ const PreviewCaptureButton = ({ blueprint }) => {
                     >
                         {isCapturing ? (
                             <>
-                                <Loader2 className="w-4 h-4 animate-spin" />
+                                <Loader2 className="size-4 animate-spin" />
                                 <span className="text-xs">도면 저장중...</span>
                             </>
                         ) : (
                             <>
-                                <ImageDown className="w-4 h-4" />
+                                <ImageDown className="size-4" />
                                 <span className="text-xs">도면 이미지</span>
                             </>
                         )}

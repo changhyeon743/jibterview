@@ -32,7 +32,7 @@ const LoadingProgress = ({ progress, isLoading }) => {
 
     return (
         <div
-            className={`absolute bottom-0 left-0 right-0 z-50 transition-opacity duration-1000 ${
+            className={`absolute bottom-0 inset-x-0 z-50 transition-opacity duration-1000 ${
                 isVisible ? 'opacity-100' : 'opacity-0'
             }`}
         >

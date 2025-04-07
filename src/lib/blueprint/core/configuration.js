@@ -1,10 +1,11 @@
+import { EventDispatcher } from "three";
+
 import {
   availableDimUnits,
   dimCentiMeter,
   WALL_STANDARD_HEIGHT,
   WALL_STANDARD_THICKNESS,
 } from "./constants.js";
-import { EventDispatcher } from "three";
 import { EVENT_CHANGED } from "./events.js";
 
 // GENERAL:

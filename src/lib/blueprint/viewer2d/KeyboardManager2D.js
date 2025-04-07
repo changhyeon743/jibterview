@@ -1,4 +1,5 @@
 import { EventDispatcher } from "three";
+
 import { EVENT_KEY_PRESSED, EVENT_KEY_RELEASED } from "../core/events";
 
 export class KeyboardListener2D extends EventDispatcher {

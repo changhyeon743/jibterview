@@ -1,9 +1,8 @@
 import 'server-only';
 
-import { cache } from 'react';
 import { unstable_cache } from 'next/cache';
+import { cache } from 'react';
 
-import { createClient } from '@/lib/supabase/server';
 import {
   getChatByIdQuery,
   getUserQuery,
@@ -17,6 +16,7 @@ import {
   getUserByIdQuery,
   getChatWithMessagesQuery,
 } from '@/db/queries';
+import { createClient } from '@/lib/supabase/server';
 
 const getSupabase = cache(() => createClient());
 

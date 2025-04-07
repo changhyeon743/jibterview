@@ -1,5 +1,11 @@
-import { EventDispatcher, Vector2, Vector3, Plane } from "three";
 import Bezier from "bezier-js";
+import { EventDispatcher, Vector2, Vector3, Plane , Matrix4 } from "three";
+
+import {
+  Configuration,
+  configWallThickness,
+  configWallHeight,
+} from "../core/configuration.js";
 import { WallTypes, defaultWallTexture } from "../core/constants.js";
 import {
   EVENT_ACTION,
@@ -10,17 +16,12 @@ import {
   EVENT_NEW_ITEM,
   EVENT_ITEM_REMOVED,
 } from "../core/events.js";
-import {
-  Configuration,
-  configWallThickness,
-  configWallHeight,
-} from "../core/configuration.js";
 import { Utils } from "../core/utils.js";
-import { InWallItem } from "../items/in_wall_item.js";
 import { InWallFloorItem } from "../items/in_wall_floor_item.js";
-import { WallItem } from "../items/wall_item.js";
+import { InWallItem } from "../items/in_wall_item.js";
 import { WallFloorItem } from "../items/wall_floor_item.js";
-import { Matrix4 } from "three";
+import { WallItem } from "../items/wall_item.js";
+
 
 /** The default wall texture. */
 // export const defaultWallTexture = { url: 'rooms/textures/wallmap.png', stretch: true, scale: 0 };
@@ -754,4 +755,3 @@ export class Wall extends EventDispatcher {
   }
 }
 
-export default Wall;

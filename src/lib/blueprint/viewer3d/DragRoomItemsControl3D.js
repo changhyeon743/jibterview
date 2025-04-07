@@ -1,5 +1,11 @@
-import {EventDispatcher, OrthographicCamera, Vector2} from "three";
-import { Plane, Raycaster, Vector3, Matrix4 } from "three";
+import {EventDispatcher, OrthographicCamera, Vector2, Plane, Raycaster, Vector3, Matrix4 } from "three";
+
+import {
+  Configuration,
+  snapToGrid,
+  snapTolerance3D,
+} from "../core/configuration";
+import { WALL_STANDARD_THICKNESS } from "../core/constants";
 import {
   EVENT_ITEM_MOVE,
   EVENT_ITEM_MOVE_FINISH,
@@ -10,14 +16,8 @@ import {
 } from "../core/events";
 import { IS_TOUCH_DEVICE } from "../DeviceInfo";
 import { ConfigurationHelper } from "../helpers/ConfigurationHelper";
-import {
-  Configuration,
-  snapToGrid,
-  snapTolerance3D,
-} from "../core/configuration";
-import { InWallItem } from "../items/in_wall_item";
 import { InWallFloorItem } from "../items/in_wall_floor_item";
-import { WALL_STANDARD_THICKNESS } from "../core/constants";
+import { InWallItem } from "../items/in_wall_item";
 // @orchestra blueprint
 
 /**

@@ -1,6 +1,6 @@
+import { Matrix, Texture } from "pixi.js";
 import { Color } from "three";
 
-import { Matrix, Texture } from "pixi.js";
 import { BaseFloorplanViewElement2D } from "./BaseFloorplanViewElement2D";
 
 export class BoundaryView2D extends BaseFloorplanViewElement2D {

@@ -1,6 +1,6 @@
-import { EventDispatcher } from "three";
-import inside from "point-in-polygon";
 import alpha_shape from "alpha-shape";
+import inside from "point-in-polygon";
+import { EventDispatcher } from "three";
 
 import {
   EVENT_BOUNDARY_UPDATE,
