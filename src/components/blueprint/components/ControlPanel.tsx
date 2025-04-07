@@ -20,7 +20,7 @@ import PreviewCaptureButton from "./PreviewCaptureButton";
 
 // 재사용 가능한 툴팁 버튼 컴포넌트
 const TooltipButton = ({
-                           icon: Icon,
+                           icon: any,
                            label,
                            tooltip,
                            onClick,
