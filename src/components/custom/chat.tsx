@@ -144,7 +144,7 @@ export function Chat({
                         exit={{ x: '100%', opacity: 0 }}
                         transition={{ type: 'spring', stiffness: 100, damping: 20 }}
                     >
-                        <DynamicBlueprint initialData={blueprintData} chatId={id} />
+                        <DynamicBlueprint initialData={blueprintData} />
                     </motion.div>
                 )}
             </AnimatePresence>

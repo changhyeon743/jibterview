@@ -34,21 +34,19 @@ export const PreviewMessage = ({
     const { blueprint } = useBlueprint();
 
     // blueprint 코드 관련 로직 간소화 - 코드 실행만 집중
-    useEffect(() => {
-        if (message.role !== 'assistant') return;
+    // useEffect(() => {
+    //     if (message.role !== 'assistant') return;
+    //
+    //     const toolInvocations = message.toolInvocations ?? [];
+    //
+    //     const blueprintAction = toolInvocations.find(
+    //         (toolInvocation) =>
+    //             toolInvocation.toolName === 'blueprintAction' &&
+    //             toolInvocation.state === 'result' &&
+    //             'result' in toolInvocation
+    //     );
+    // }, [message]);
 
-        // 도구 호출에서 코드 찾기
-        if (message.toolInvocations?.length > 0) {
-            const blueprintAction = message.toolInvocations.find(
-                tool => tool.toolName === 'blueprintAction' && tool.state === 'result'
-            );
-
-            if (blueprintAction?.result?.code) {
-                // 코드는 찾지만 Context에 저장하지 않음
-                // 실행이 필요한 경우 BlueprintREPL에서 직접 처리
-            }
-        }
-    }, [message]);
 
     return (
         <motion.div

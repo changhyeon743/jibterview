@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const LoadingProgress = ({ progress, isLoading }) => {
+const LoadingProgress = ({ progress, isLoading }: { progress: number, isLoading: boolean}) => {
     // 부드러운 애니메이션을 위한 현재 표시 진행도 상태
     const [displayProgress, setDisplayProgress] = useState(0);
     // 로딩바 표시 상태 (투명도 애니메이션용)

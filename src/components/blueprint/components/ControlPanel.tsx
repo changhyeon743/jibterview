@@ -2,8 +2,8 @@
 
 import {
     Cuboid, Pencil, Move, Scissors, Trash, Download, Upload, Camera, Eye, Box
-} from "lucide-react";
-import {useRef, useState} from "react";
+, LucideIcon } from "lucide-react";
+import {Dispatch, ReactNode, SetStateAction, useRef, useState} from "react";
 
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -18,15 +18,26 @@ import { floorplannerModes } from "@/lib/blueprint/viewer2d/Viewer2D";
 
 import PreviewCaptureButton from "./PreviewCaptureButton";
 
+
+// TooltipButton props 인터페이스 정의
+interface TooltipButtonProps {
+    icon: LucideIcon;
+    label: string;
+    tooltip: string;
+    onClick: () => void;
+    disabled?: boolean;
+    className?: string;
+}
+
 // 재사용 가능한 툴팁 버튼 컴포넌트
 const TooltipButton = ({
-                           icon: any,
+                           icon: Icon, // 컴포넌트로서 사용하기 위해 대문자
                            label,
                            tooltip,
                            onClick,
                            disabled = false,
-                           className = ""
-                       }) => (
+                           className = "",
+                       }: TooltipButtonProps) => (
     <TooltipProvider delayDuration={300}>
         <Tooltip>
             <TooltipTrigger asChild>
@@ -41,26 +52,38 @@ const TooltipButton = ({
                     <span className="text-xs">{label}</span>
                 </Button>
             </TooltipTrigger>
-            <TooltipContent side='bottom'>
+            <TooltipContent side="bottom">
                 <p className="text-xs">{tooltip}</p>
             </TooltipContent>
         </Tooltip>
     </TooltipProvider>
 );
 
-// 도구 그룹 컴포넌트
-const ToolGroup = ({ children, className = "" }) => (
+
+interface ToolGroupProps {
+    children: ReactNode;
+    className?: string;
+}
+
+const ToolGroup = ({ children, className = "" }: ToolGroupProps) => (
     <div className={`flex items-center gap-1 ${className}`}>
         {children}
     </div>
 );
+
+interface ControlPanelProps {
+    blueprint: any; // 실제 타입으로 대체하세요
+    selectedRoom: any; // 필요 시 타입 명시 (예: string | null)
+    roomName: string;
+    setRoomName: Dispatch<SetStateAction<string>>;
+}
 
 const ControlPanel = ({
                           blueprint,
                           selectedRoom,
                           roomName,
                           setRoomName,
-                      }) => {
+                      }:ControlPanelProps) => {
     const [is2DMode, setIs2DMode] = useState(false);
     const [isPerspective, setIsPerspective] = useState(false);
     const [isRealistic, setIsRealistic] = useState(true);
@@ -69,10 +92,10 @@ const ControlPanel = ({
     const toggleRenderingMode = () => {
         setIsRealistic(!isRealistic);
         if (blueprint?.roomplanner) {
-            blueprint.roomplanner.physicalRoomItems.forEach((item) => {
+            blueprint.roomplanner.physicalRoomItems.forEach((item: any) => {
                 item.realistic = !isRealistic;
             });
-            blueprint.roomplanner.floors3d.forEach((item) => {
+            blueprint.roomplanner.floors3d.forEach((item: any) => {
                 item.realistic = !isRealistic;
             });
             // blueprint.roomplanner.edges3d.forEach((item) => {
@@ -101,7 +124,7 @@ const ControlPanel = ({
         }
     };
 
-    const setViewer2DMode = (mode) => () => blueprint?.setViewer2DMode(mode);
+    const setViewer2DMode = (mode: number) => () => blueprint?.setViewer2DMode(mode);
     const deleteCurrentItem = () => blueprint?.floorplanningHelper?.deleteCurrentItem();
 
     // 파일 관련 기능
@@ -118,7 +141,7 @@ const ControlPanel = ({
         }
     };
 
-    const loadBlueprint3DDesign = (event) => {
+    const loadBlueprint3DDesign = (event: any) => {
         const file = event.target.files?.[0];
         if (file && blueprint && blueprint.model) {
             const reader = new FileReader();

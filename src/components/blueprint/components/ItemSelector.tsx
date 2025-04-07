@@ -56,8 +56,16 @@ const categoryTranslations: {
     wallpaper: "벽지",
 };
 
+interface ImageThumbnailProps {
+    itemName: string;
+    width?: number;
+    height?: number;
+    quality?: number;
+    format?: 'png' | 'jpg' | 'webp'; // 필요한 포맷만 나열
+}
 
-const ImageThumbnail = ({
+
+const ImageThumbnail: React.FC<ImageThumbnailProps> = ({
                             itemName,
                             width = 90,
                             height = 90,

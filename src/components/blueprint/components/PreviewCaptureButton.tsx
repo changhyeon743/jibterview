@@ -13,7 +13,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const PreviewCaptureButton = ({ blueprint }) => {
+const PreviewCaptureButton = ({ blueprint }: {blueprint: any}) => {
     const [isCapturing, setIsCapturing] = useState(false);
 
     const captureTopView = async () => {
@@ -50,7 +50,7 @@ const PreviewCaptureButton = ({ blueprint }) => {
             let hasContent = false;
 
             // 바닥면 경계 계산
-            roomplanner.floors3d.forEach(floor => {
+            roomplanner.floors3d.forEach((floor: any) => {
                 if (floor.floorPlane) {
                     boundingBox.expandByObject(floor.floorPlane);
                     hasContent = true;
@@ -58,7 +58,7 @@ const PreviewCaptureButton = ({ blueprint }) => {
             });
 
             // 아이템 경계 포함
-            roomplanner.physicalRoomItems.forEach(item => {
+            roomplanner.physicalRoomItems.forEach((item: any) => {
                 boundingBox.expandByObject(item);
                 hasContent = true;
             });
