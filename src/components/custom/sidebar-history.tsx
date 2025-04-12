@@ -267,7 +267,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
                     {groupedChats.today.length > 0 && (
                       <>
                         <div className="px-2 py-1 text-xs text-sidebar-foreground/50">
-                          Today
+                          오늘
                         </div>
                         {groupedChats.today.map((chat) => (
                           <ChatItem
@@ -307,7 +307,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
                     {groupedChats.lastWeek.length > 0 && (
                       <>
                         <div className="px-2 py-1 text-xs text-sidebar-foreground/50 mt-6">
-                          Last 7 days
+                          지난 7일
                         </div>
                         {groupedChats.lastWeek.map((chat) => (
                           <ChatItem

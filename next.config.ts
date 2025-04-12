@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       {
         hostname: 'avatar.vercel.sh',
       },
+      {hostname: 'sgnfvsbudmenkedygcwp.supabase.co'}
     ],
   },
 };

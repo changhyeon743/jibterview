@@ -1,29 +1,29 @@
 "use client"
-import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
+import {createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef} from 'react';
 
 import { EVENT_UPDATED, EVENT_NEW_ITEM, EVENT_ITEM_REMOVED } from '@/lib/blueprint/core/events';
+import {diffSimplifiedRoomInfo, getSimplifiedRoomInfo} from "@/lib/blueprint/analysis";
 
 // 간소화된 Context 타입 정의
 interface BlueprintContextType {
-    // 핵심 상태만 유지
     blueprint: any | null;
     blueprintData: string;
+    simplifiedRoomInfo: any | null;
+    diff: any[] | null;
 
-    // 물체 추가 함수 (단순화된 핵심 기능)
     addItem: (itemData: any) => void;
-
-    // 기본 세터 함수
     setBlueprint: (instance: any) => void;
     setBlueprintData: (data: string) => void;
-
-    // 서버 저장 기능
     saveBlueprintData: (chatId: string) => Promise<void>;
 }
+
 
 // 기본 Context 생성
 const BlueprintContext = createContext<BlueprintContextType>({
     blueprint: null,
     blueprintData: '',
+    simplifiedRoomInfo: null,
+    diff: [],
 
     addItem: () => {},
     setBlueprint: () => {},
@@ -36,6 +36,9 @@ export const BlueprintProvider = ({ children }: { children: ReactNode }) => {
     // 핵심 상태
     const [blueprint, setBlueprint] = useState<any | null>(null);
     const [blueprintData, setBlueprintData] = useState<string>('');
+    const [simplifiedRoomInfo, setSimplifiedRoomInfo] = useState<any | null>(null);
+    const [diff, setDiff] = useState<any[] | null>(null);
+    const previousSimplified = useRef<any | null>(null);
 
     // Blueprint 모델이 변경될 때 데이터 업데이트
     useEffect(() => {
@@ -45,13 +48,29 @@ export const BlueprintProvider = ({ children }: { children: ReactNode }) => {
         // 이벤트 핸들러 - 간소화된 버전
         const handleModelUpdate = () => {
             try {
-                // 모델이 업데이트되면 즉시 직렬화
-                const serializedData = blueprint.model.exportSerialized();
+                const serializedData = blueprint.model.exportFloorplan();
                 setBlueprintData(serializedData);
+
+                const simplified = getSimplifiedRoomInfo(serializedData);
+                setSimplifiedRoomInfo(simplified);
+
+                if (previousSimplified.current) {
+                    const delta = diffSimplifiedRoomInfo(
+                        previousSimplified.current.rooms,
+                        simplified.rooms
+                    );
+                    setDiff(delta.length > 0 ? delta : null);
+                } else {
+                    setDiff(null);
+                }
+
+                previousSimplified.current = simplified;
+
             } catch (error) {
-                console.error('Blueprint 데이터 직렬화 오류:', error);
+                console.error('Blueprint 데이터 처리 오류:', error);
             }
         };
+
         console.log("blueprint updated in Context!3")
         // 이벤트 리스너 등록
         blueprint.model.addEventListener(EVENT_UPDATED, handleModelUpdate);
@@ -119,7 +138,8 @@ export const BlueprintProvider = ({ children }: { children: ReactNode }) => {
     const value = {
         blueprint,
         blueprintData,
-
+        simplifiedRoomInfo,
+        diff,
         addItem,
         setBlueprint,
         setBlueprintData,

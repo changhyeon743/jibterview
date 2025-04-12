@@ -59,6 +59,17 @@ export class Model extends EventDispatcher {
     this.dispatchEvent({ type: EVENT_LOADED, item: this });
   }
 
+  exportFloorplan() {
+    let floorplanJSON = this.floorplan.saveFloorplan();
+    let roomItemsJSON = [];
+    this.__roomItems.forEach((item) => {
+      // item.updateMetadataExplicit();
+      roomItemsJSON.push(item.metadata);
+    });
+    var room = { floorplanner: floorplanJSON, items: roomItemsJSON };
+    return room;
+  }
+
   exportSerialized() {
     let floorplanJSON = this.floorplan.saveFloorplan();
     let roomItemsJSON = [];
