@@ -122,7 +122,7 @@ export async function POST(request: Request) {
     modelId,
     blueprint,
       diff
-  }: { id: string; messages: Array<Message>; modelId: string } =
+  }: { id: string; messages: Array<Message>; modelId: string; blueprint: any; diff: any } =
       await request.json();
 
   const user = await getUser();

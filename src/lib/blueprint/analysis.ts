@@ -1,83 +1,193 @@
-import { Vector2, Vector3 } from 'three';
+import { Vector2 } from 'three';
 
 //@orchestra: 센티미터 단위의 아이템 좌표를 미터 단위로 변환하는 상수
 const ITEM_SCALE = 0.01;
 
+/* ────────────────────────────────────── */
+/*             TYPE DEFINITIONS         */
+/* ────────────────────────────────────── */
+
+/** Blueprint 전체 구조 */
+export interface Blueprint {
+    floorplanner?: Floorplanner;
+    items?: Item[];
+}
+
+/** 평면도 정보 */
+export interface Floorplanner {
+    corners: { [id: string]: Corner };
+    rooms: { [cornerIds: string]: RoomMeta };
+}
+
+/** 코너(점) 정보 */
+export interface Corner {
+    x: number;
+    y: number;
+    elevation?: number;
+}
+
+/** 방 메타정보 (floorplanner.rooms) */
+export interface RoomMeta {
+    name?: string;
+}
+
+/** 아이템 정보 */
+export interface Item {
+    itemName: string;
+    /** 좌표: [x, y, z, ...] (x, z를 활용하여 2D 평면 내 위치 결정) */
+    position: number[];
+}
+
+/** 아이템의 단순화된 정보 */
+export interface SimplifiedItem {
+    name: string;
+    position: string;
+    relation: string;
+}
+
+/**
+ * 최종 SimplifiedRoom 타입: 이름, 면적, 아이템, areaCenter에 연결된 방 이름(optional)
+ * connections 배열은 "연결된 방 이름"들을 담으며, 공유 코너가 2개 이상인 경우 연결된 것으로 판단합니다.
+ */
+export interface SimplifiedRoom {
+    name: string;
+    area: number;
+    items: SimplifiedItem[];
+    areaCenter: { x: number; y: number };
+    connections?: string[];
+}
+
+/** 최종 결과 타입 */
+export interface SimplifiedRoomInfo {
+    rooms: SimplifiedRoom[];
+    metrics: Metrics;
+    overall_character: string;
+}
+
+/** 전체 공간 메트릭 */
+export interface Metrics {
+    total_area: number;
+    room_count: number;
+    public_private_ratio: number;
+    space_efficiency: string;
+}
+
+/** 방 diff 관련 타입 */
+export type RoomDiff =
+    | { type: 'added'; room: SimplifiedRoom }
+    | { type: 'removed'; room: SimplifiedRoom }
+    | { type: 'modified'; before: SimplifiedRoom; after: SimplifiedRoom };
+
+/**
+ * 내부 처리용 확장 타입: 최종 결과에 포함하지 않는 코너 ID 배열을 추가
+ */
+interface InternalSimplifiedRoom {
+    name: string;
+    area: number;
+    items: SimplifiedItem[];
+    areaCenter: { x: number; y: number };
+    cornerIds: string[]; // 내부에서 연결 관계 계산용으로 보관
+}
+
+/* ────────────────────────────────────── */
+/*         MAIN FUNCTION              */
+/* ────────────────────────────────────── */
+
+function isBlueprint(data: unknown): data is Blueprint {
+    return typeof data === 'object' && data !== null && 'floorplanner' in data;
+}
+
 /**
  * 평면도 JSON 데이터를 분석하여 단순화된 공간 정보를 반환
  * @param blueprint JSON 구조의 평면도 데이터 (floorplanner와 items)
- * @returns { rooms, metrics, overall_character } 분석 결과 객체
+ * @returns SimplifiedRoomInfo: { rooms, metrics, overall_character }
  */
-export function getSimplifiedRoomInfo(blueprint: any) {
+export function getSimplifiedRoomInfo(blueprint: any): SimplifiedRoomInfo {
+    if (!isBlueprint(blueprint)) {
+        throw new Error("유효하지 않은 blueprint 데이터입니다.");
+    }
+
     if (!blueprint?.floorplanner) {
-        return { rooms: [], metrics: {}, overall_character: "데이터가 없습니다." };
+        return {
+            rooms: [],
+            metrics: { total_area: 0, room_count: 0, public_private_ratio: 0, space_efficiency: "알 수 없음" },
+            overall_character: "데이터가 없습니다."
+        };
     }
 
     const floorplan = blueprint.floorplanner;
-    const blueprintItems = blueprint.items || [];
+    const blueprintItems = blueprint.items ?? [];
 
-    // floorplan.rooms는 키가 콤마로 구분된 코너 ID 문자열로 구성됨
-    const rooms = Object.keys(floorplan.rooms).map(roomKey => {
+    // 내부 처리용으로 각 방 객체에 cornerIds를 포함해 계산
+    const internalRooms: InternalSimplifiedRoom[] = Object.keys(floorplan.rooms).map(roomKey => {
         const roomMeta = floorplan.rooms[roomKey];
         const cornerIds = roomKey.split(',').map(id => id.trim());
 
-        // 각 코너 ID에 해당하는 좌표값을 floorplan.corners에서 추출 (ID 포함)
-        const corners = cornerIds.map(id => {
-            const corner = floorplan.corners[id];
-            if (!corner) return null;
-            return { id, x: corner.x, y: corner.y, elevation: corner.elevation };
-        }).filter(c => c !== null);
+        // 각 코너 ID에 해당하는 좌표값을 floorplan.corners에서 추출 (id 포함)
+        const corners = cornerIds
+            .map(id => {
+                const corner = floorplan.corners[id];
+                if (!corner) return null;
+                return { id, x: corner.x, y: corner.y, elevation: corner.elevation };
+            })
+            .filter((c): c is { id: string; x: number; y: number; elevation: number | undefined } => c !== null);
 
-        // 방 면적 및 중심 계산 (2D 평면: x, y)
         const area = calculateRoomArea(corners);
         const areaCenter = calculateCentroid(corners);
-
-        // 아이템은 blueprintItems에서 해당 방의 다각형 내부에 있는지 확인
         const roomItems = blueprintItems.filter(item => isItemInRoom(item, corners));
-        const items = roomItems.map(item => ({
+        const items: SimplifiedItem[] = roomItems.map(item => ({
             name: getItemName(item),
             position: describeItemPosition(item, areaCenter, corners),
             relation: describeItemRelations(item, roomItems)
         }));
 
-        // 추후 방 연결 관계 계산을 위해 코너 ID 정보를 유지함
-        const features = extractRoomFeatures(corners, area, areaCenter, floorplan);
-
         return {
-            name: roomMeta.name || "무명 공간",
+            name: roomMeta.name ?? "무명 공간",
             area: parseFloat(area.toFixed(1)),
             items,
-            cornerIds, // 방 연결 관계 분석에 활용
-            corners,
             areaCenter,
-            features
+            cornerIds
         };
     });
 
-    // 각 방 간의 연결 관계 (공유하는 코너가 두 개 이상인 경우)
-    rooms.forEach(room => {
-        room.connections = findRoomConnections(room, rooms);
+    // 연결 관계 계산: 두 방이 2개 이상의 코너를 공유하면 연결된 것으로 판단
+    const finalRooms: SimplifiedRoom[] = internalRooms.map(room => {
+        const connections = internalRooms
+            .filter(other => other !== room)
+            .filter(other => {
+                const shared = room.cornerIds.filter(id => other.cornerIds.includes(id));
+                return shared.length >= 2;
+            })
+            .map(other => other.name);
+        return {
+            name: room.name,
+            area: room.area,
+            items: room.items,
+            areaCenter: room.areaCenter,
+            // 연결된 방 이름 목록이 있을 경우에만 포함
+            ...(connections.length > 0 && { connections })
+        };
     });
 
-    // 전체 공간 메트릭 계산
-    const metrics = {
-        total_area: calculateTotalArea(rooms),
-        room_count: rooms.length,
-        public_private_ratio: calculatePublicPrivateRatio(rooms),
-        space_efficiency: calculateSpaceEfficiency(rooms)
+    // 전체 메트릭 계산
+    const metrics: Metrics = {
+        total_area: calculateTotalArea(finalRooms),
+        room_count: finalRooms.length,
+        public_private_ratio: calculatePublicPrivateRatio(finalRooms),
+        space_efficiency: calculateSpaceEfficiency(finalRooms)
     };
 
-    const overall_character = inferOverallCharacter(rooms, metrics);
+    const overall_character = inferOverallCharacter(finalRooms, metrics);
 
-    return { rooms, metrics, overall_character };
+    return { rooms: finalRooms, metrics, overall_character };
 }
 
 /* ────────────────────────────────────── */
 /*           HELPER FUNCTIONS             */
 /* ────────────────────────────────────── */
 
-//@orchestra: 방의 면적을 다각형 넓이(슈뢰더 공식)를 사용하여 계산
-function calculateRoomArea(corners: any[]): number {
+/** 다각형 넓이 계산 (슈뢰더 공식) */
+function calculateRoomArea(corners: { x: number; y: number }[]): number {
     if (corners.length < 3) return 0;
     let area = 0;
     for (let i = 0; i < corners.length; i++) {
@@ -87,51 +197,53 @@ function calculateRoomArea(corners: any[]): number {
     return Math.abs(area) / 2;
 }
 
-//@orchestra: 다각형의 중심(중심점)을 계산 (산술 평균)
-function calculateCentroid(corners: any[]): { x: number, y: number } {
+/** 다각형 중심 (산술 평균) 계산 */
+function calculateCentroid(corners: { x: number; y: number }[]): { x: number; y: number } {
     let sumX = 0, sumY = 0;
-    for (const pt of corners) {
+    corners.forEach(pt => {
         sumX += pt.x;
         sumY += pt.y;
-    }
+    });
     return { x: sumX / corners.length, y: sumY / corners.length };
 }
 
-//@orchestra: 아이템 이름 추출 (확장자 제거)
-function getItemName(item: any): string {
+/** 아이템 이름 추출 (확장자 제거 및 언더스코어 제거) */
+function getItemName(item: Item): string {
     const name = item.itemName || '';
     return name.split('.')[0].replace(/_/g, ' ');
 }
 
-//@orchestra: 아이템의 (x,z)를 2D 좌표로 사용하여 방 다각형 내부 포함 여부 판별
-function isItemInRoom(item: any, corners: any[]): boolean {
+/** 2D 평면에서 아이템 위치가 다각형 내부에 있는지 판별 */
+function isItemInRoom(item: Item, corners: { x: number; y: number }[]): boolean {
     if (!item.position || !Array.isArray(item.position)) return false;
-    // 아이템 좌표를 센티미터에서 미터 단위로 변환: (x * ITEM_SCALE, z * ITEM_SCALE)
     const point = { x: item.position[0] * ITEM_SCALE, y: item.position[2] * ITEM_SCALE };
     return pointInPolygon(point, corners);
 }
 
-//@orchestra: 레이캐스팅 알고리즘을 사용한 점-다각형 포함 여부 판별
-function pointInPolygon(point: { x: number, y: number }, corners: any[]): boolean {
+/** 레이캐스팅을 사용해 점이 다각형 내부에 있는지 판별 */
+function pointInPolygon(point: { x: number; y: number }, corners: { x: number; y: number }[]): boolean {
     let inside = false;
     for (let i = 0, j = corners.length - 1; i < corners.length; j = i++) {
         const xi = corners[i].x, yi = corners[i].y;
         const xj = corners[j].x, yj = corners[j].y;
-        const intersect = ((yi > point.y) !== (yj > point.y)) &&
-            (point.x < (xj - xi) * (point.y - yi) / (yj - yi) + xi);
+        const intersect =
+            ((yi > point.y) !== (yj > point.y)) &&
+            (point.x < ((xj - xi) * (point.y - yi)) / (yj - yi) + xi);
         if (intersect) inside = !inside;
     }
     return inside;
 }
 
-//@orchestra: 아이템 위치에 대해 방 중심과 벽과의 거리를 이용하여 상대적 위치 설명 생성
-function describeItemPosition(item: any, roomCenter: { x: number, y: number }, corners: any[]): string {
+/** 아이템의 위치를 토대로 방 중심 및 벽과의 거리를 고려하여 설명 문자열 생성 */
+function describeItemPosition(
+    item: Item,
+    roomCenter: { x: number; y: number },
+    corners: { x: number; y: number }[]
+): string {
     if (!item.position || !Array.isArray(item.position)) return '';
-    // 좌표 변환 적용: 센티미터 → 미터
     const itemPos = new Vector2(item.position[0] * ITEM_SCALE, item.position[2] * ITEM_SCALE);
     const centerVec = new Vector2(roomCenter.x, roomCenter.y);
     let nearWall = false;
-    // floorplanner 좌표와 비교 시 단위가 작으므로 임계값을 0.5로 설정
     const threshold = 0.5;
     for (let i = 0, j = corners.length - 1; i < corners.length; j = i++) {
         const wallStart = new Vector2(corners[j].x, corners[j].y);
@@ -147,24 +259,19 @@ function describeItemPosition(item: any, roomCenter: { x: number, y: number }, c
         positionDesc = '벽 근처에 위치';
         const dx = itemPos.x - centerVec.x;
         const dy = itemPos.y - centerVec.y;
-        if (Math.abs(dx) > Math.abs(dy)) {
-            positionDesc += dx > 0 ? ' (오른쪽 벽)' : ' (왼쪽 벽)';
-        } else {
-            positionDesc += dy > 0 ? ' (위쪽 벽)' : ' (아래쪽 벽)';
-        }
+        positionDesc += Math.abs(dx) > Math.abs(dy)
+            ? dx > 0 ? ' (오른쪽 벽)' : ' (왼쪽 벽)'
+            : dy > 0 ? ' (위쪽 벽)' : ' (아래쪽 벽)';
     } else {
         const distance = itemPos.distanceTo(centerVec);
-        // 임의 기준: 중심과의 거리가 방 면적의 10% 미만이면 중앙으로 판단
-        if (distance < (calculateRoomArea(corners) * 0.1)) {
-            positionDesc = '공간 중앙에 위치';
-        } else {
-            positionDesc = '벽에서 떨어져 있음';
-        }
+        positionDesc = distance < (calculateRoomArea(corners) * 0.1)
+            ? '공간 중앙에 위치'
+            : '벽에서 떨어져 있음';
     }
     return positionDesc;
 }
 
-//@orchestra: 점과 선분 사이의 최단 거리 계산
+/** 점과 선분 사이의 최단 거리 계산 */
 function distanceToLine(point: Vector2, lineStart: Vector2, lineEnd: Vector2): number {
     const L2 = lineStart.distanceToSquared(lineEnd);
     if (L2 === 0) return point.distanceTo(lineStart);
@@ -178,10 +285,9 @@ function distanceToLine(point: Vector2, lineStart: Vector2, lineEnd: Vector2): n
     return point.distanceTo(projection);
 }
 
-//@orchestra: 동일 방 내 다른 아이템과의 관계(가장 가까운 아이템) 설명 생성
-function describeItemRelations(item: any, roomItems: any[]): string {
+/** 동일 방 내 다른 아이템과의 관계(가장 가까운 아이템) 설명 생성 */
+function describeItemRelations(item: Item, roomItems: Item[]): string {
     if (roomItems.length <= 1) return '공간 내 유일한 가구';
-    // 좌표 변환 적용: 센티미터 → 미터
     const itemPos = new Vector2(item.position[0] * ITEM_SCALE, item.position[2] * ITEM_SCALE);
     const relatedItems = roomItems
         .filter(other => other !== item)
@@ -191,83 +297,25 @@ function describeItemRelations(item: any, roomItems: any[]): string {
             return { name: getItemName(other), distance, pos: otherPos };
         })
         .sort((a, b) => a.distance - b.distance);
-
     if (relatedItems.length === 0) return '다른 가구와 떨어져 있음';
     const closest = relatedItems[0];
     let relation = `${closest.name}와(과) 가까이 있음`;
     const dx = closest.pos.x - itemPos.x;
     const dy = closest.pos.y - itemPos.y;
-    if (Math.abs(dx) > Math.abs(dy)) {
-        relation += dx > 0 ? ' (오른쪽에)' : ' (왼쪽에)';
-    } else {
-        relation += dy > 0 ? ' (앞쪽에)' : ' (뒤쪽에)';
-    }
+    relation += Math.abs(dx) > Math.abs(dy)
+        ? dx > 0 ? ' (오른쪽에)' : ' (왼쪽에)'
+        : dy > 0 ? ' (앞쪽에)' : ' (뒤쪽에)';
     return relation;
 }
 
-//@orchestra: 방 간의 연결 관계를, 공유 코너가 2개 이상인 경우로 판단하여 문자열 배열 반환
-function findRoomConnections(room: any, rooms: any[]): string[] {
-    const connections: string[] = [];
-    const myCornerIds = new Set(room.cornerIds);
-    rooms.forEach(other => {
-        if (other === room) return;
-        const otherCornerIds = new Set(other.cornerIds);
-        const shared = [...myCornerIds].filter(id => otherCornerIds.has(id));
-        if (shared.length >= 2) {
-            connections.push(`${other.name}과 연결됨`);
-        }
-    });
-    return connections;
-}
-
-//@orchestra: 방의 주요 특징(면적, 다각형 구조, 위치 등) 추출
-function extractRoomFeatures(
-    corners: any[],
-    area: number,
-    areaCenter: { x: number, y: number },
-    floorplan: any
-): string[] {
-    const features: string[] = [];
-    if (area < 9) {
-        features.push('작은 공간');
-    } else if (area > 25) {
-        features.push('넓은 공간');
-    }
-    if (corners.length > 4) {
-        features.push('다각형 구조');
-    }
-    // floorplan의 전체 코너 평균을 기준으로 평면도 중심 계산
-    const fpCenter = getFloorplanCenter(floorplan);
-    const dx = areaCenter.x - fpCenter.x;
-    const dy = areaCenter.y - fpCenter.y;
-    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
-        features.push('평면도 가장자리에 위치');
-    } else {
-        features.push('평면도 중앙부에 위치');
-    }
-    return features;
-}
-
-//@orchestra: 전체 floorplan의 중심(모든 코너의 평균) 계산
-function getFloorplanCenter(floorplan: any): { x: number, y: number } {
-    const cornerValues = Object.values(floorplan.corners);
-    if (cornerValues.length === 0) return { x: 0, y: 0 };
-    let sumX = 0, sumY = 0;
-    for (const corner of cornerValues) {
-        sumX += corner.x;
-        sumY += corner.y;
-    }
-    return { x: sumX / cornerValues.length, y: sumY / cornerValues.length };
-}
-
-//@orchestra: 모든 방의 총 면적 계산
-function calculateTotalArea(rooms: any[]): number {
+/** 전체 면적 계산 */
+function calculateTotalArea(rooms: SimplifiedRoom[]): number {
     const total = rooms.reduce((sum, room) => sum + room.area, 0);
     return parseFloat(total.toFixed(1));
 }
 
-//@orchestra: 공적/사적 공간 비율 계산 (방 이름에 특정 키워드 포함 여부에 따라)
-function calculatePublicPrivateRatio(rooms: any[]): number {
+/** 공적/사적 공간 비율 계산 (방 이름에 특정 키워드 여부 기준) */
+function calculatePublicPrivateRatio(rooms: SimplifiedRoom[]): number {
     const publicRooms = rooms.filter(room =>
         room.name.includes('거실') ||
         room.name.includes('주방') ||
@@ -284,8 +332,8 @@ function calculatePublicPrivateRatio(rooms: any[]): number {
     return parseFloat((publicArea / privateArea).toFixed(2));
 }
 
-//@orchestra: 방 평균 면적을 기준으로 공간 효율성 평가
-function calculateSpaceEfficiency(rooms: any[]): string {
+/** 방 평균 면적을 기반으로 공간 효율성 평가 */
+function calculateSpaceEfficiency(rooms: SimplifiedRoom[]): string {
     const totalArea = calculateTotalArea(rooms);
     const roomCount = rooms.length;
     if (roomCount > 0 && totalArea > 0) {
@@ -299,8 +347,8 @@ function calculateSpaceEfficiency(rooms: any[]): string {
     return "알 수 없음";
 }
 
-//@orchestra: 전체 공간 특성을, 방 개수와 공적/사적 비율 등을 고려하여 추론
-function inferOverallCharacter(rooms: any[], metrics: any): string {
+/** 전체 공간 특성 추론 (방 개수 및 공적/사적 비율 기반) */
+function inferOverallCharacter(rooms: SimplifiedRoom[], metrics: Metrics): string {
     const roomCount = rooms.length;
     let character = "";
     if (roomCount <= 2) {
@@ -310,34 +358,20 @@ function inferOverallCharacter(rooms: any[], metrics: any): string {
     } else {
         character = "대형 주거 공간";
     }
-    if (metrics.public_private_ratio > 1.0) {
-        character += "으로, 공용 공간 중심의 개방적인 구조";
-    } else {
-        character += "으로, 개인 공간이 중시된 구조";
-    }
+    character += metrics.public_private_ratio > 1.0
+        ? "으로, 공용 공간 중심의 개방적인 구조"
+        : "으로, 개인 공간이 중시된 구조";
     return character;
 }
 
 /* ────────────────────────────────────── */
-//          DIFF ENGINE FUNCTION
+/*     DIFF ENGINE FUNCTION             */
 /* ────────────────────────────────────── */
 
-export type SimplifiedRoom = {
-    name: string;
-    area: number;
-    items: { name: string }[];
-    cornerIds: string[];
-};
-
-export type RoomDiff =
-    | { type: 'added'; room: SimplifiedRoom }
-    | { type: 'removed'; room: SimplifiedRoom }
-    | { type: 'modified'; before: SimplifiedRoom; after: SimplifiedRoom };
-
 /**
- * 이전 및 이후 simplifiedRoomInfo.rooms 배열을 비교하여 변화(diff)를 계산
- * @param before 이전 simplifiedRoomInfo.rooms
- * @param after 이후 simplifiedRoomInfo.rooms
+ * 이전 및 이후 SimplifiedRoom 배열을 비교하여 변화(diff)를 계산
+ * @param before 이전 SimplifiedRoom 배열
+ * @param after 이후 SimplifiedRoom 배열
  * @returns RoomDiff[] 변화 내역 목록
  */
 export function diffSimplifiedRoomInfo(
@@ -345,40 +379,31 @@ export function diffSimplifiedRoomInfo(
     after: SimplifiedRoom[]
 ): RoomDiff[] {
     const diffs: RoomDiff[] = [];
-
     const beforeMap = new Map(before.map(room => [room.name, room]));
     const afterMap = new Map(after.map(room => [room.name, room]));
+    const areaTolerance = 1.0;
 
-    const areaTolerance = 1.0; // ㎡ 단위 허용 오차
-
-    // 이름 기준으로 추가 및 변경 탐지
     for (const [name, afterRoom] of afterMap.entries()) {
         const beforeRoom = beforeMap.get(name);
-
         if (!beforeRoom) {
             diffs.push({ type: 'added', room: afterRoom });
             continue;
         }
-
         const areaChanged = Math.abs(afterRoom.area - beforeRoom.area) > areaTolerance;
         const beforeItems = new Set(beforeRoom.items.map(i => i.name));
         const afterItems = new Set(afterRoom.items.map(i => i.name));
-
         const itemChanged =
             beforeItems.size !== afterItems.size ||
             [...beforeItems].some(i => !afterItems.has(i));
-
         if (areaChanged || itemChanged) {
             diffs.push({ type: 'modified', before: beforeRoom, after: afterRoom });
         }
     }
 
-    // 제거된 방 탐지
     for (const [name, beforeRoom] of beforeMap.entries()) {
         if (!afterMap.has(name)) {
             diffs.push({ type: 'removed', room: beforeRoom });
         }
     }
-
     return diffs;
 }

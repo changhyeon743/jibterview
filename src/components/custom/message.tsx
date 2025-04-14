@@ -53,65 +53,63 @@ export const PreviewMessage = ({
                     <div className="prose dark:prose-invert group-data-[role=user]/message:text-primary-foreground">
                         <Markdown>{message.content}</Markdown>
                     </div>
-                    {message.toolInvocations && message.toolInvocations.length > 0 && (
-                        <div className="flex flex-col gap-4">
-                            {message.toolInvocations.map((toolInvocation) => {
-                                const { toolName, toolCallId, state, args } = toolInvocation;
+                    {/*{message.toolInvocations && message.toolInvocations.length > 0 && (*/}
+                    {/*    <div className="flex flex-col gap-4">*/}
+                    {/*        {message.toolInvocations.map((toolInvocation) => {*/}
+                    {/*            const { toolName, toolCallId, state, args } = toolInvocation;*/}
 
-                                if (state === 'result') {
-                                    const { result } = toolInvocation;
+                    {/*            if (state === 'result') {*/}
+                    {/*                const { result } = toolInvocation;*/}
 
-                                    return (
-                                        <div key={toolCallId}>
-                                            {toolName === 'blueprintAction' && result.interpretation ? (
-                                                <div className="my-4">
-                                                    {/* 자연어 해석 결과 표시 */}
-                                                    <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-sm">
-                                                        {result.interpretation.split('\n').map((line, i) => (
-                                                            <p key={i} className={i > 0 ? 'mt-2' : ''}>
-                                                                {line}
-                                                            </p>
-                                                        ))}
-                                                    </div>
+                    {/*                return (*/}
+                    {/*                    <div key={toolCallId}>*/}
+                    {/*                        {toolName === 'blueprintAction' && result.interpretation ? (*/}
+                    {/*                            <div className="my-4">*/}
+                    {/*                                {result.interpretation.split('\n').map((line: string, i: number) => (*/}
+                    {/*                                    <p key={i} className={i > 0 ? 'mt-2' : ''}>*/}
+                    {/*                                        {line}*/}
+                    {/*                                    </p>*/}
+                    {/*                                ))}*/}
 
-                                                    {/* 선택적으로 분석 데이터 표시 */}
-                                                    <details className="mt-3">
-                                                        <summary className="cursor-pointer text-xs text-muted-foreground">
-                                                            상세 분석 데이터 보기
-                                                        </summary>
-                                                        {result.code && (
-                                                            <BlueprintREPL
-                                                                code={result.code.replace(/```javascript\s+([\s\S]+?)\s+```/g, '$1').trim()}
-                                                                analysisData={result.data}
-                                                                onExecutionComplete={() => {}}
-                                                            />
-                                                        )}
-                                                    </details>
-                                                </div>
-                                            ) : null}
-                                        </div>
-                                    );
-                                } else {
-                                    return (
-                                        <div
-                                            key={toolCallId}
-                                            className={cx({
-                                                skeleton: ['blueprintAction'].includes(toolName),
-                                            })}
-                                        >
-                                            {toolName === 'blueprintAction' ? (
-                                                <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-md animate-pulse">
-                                                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                                                        공간 분석 중...
-                                                    </p>
-                                                </div>
-                                            ) : null}
-                                        </div>
-                                    );
-                                }
-                            })}
-                        </div>
-                    )}
+
+                    {/*                                /!* 선택적으로 분석 데이터 표시 *!/*/}
+                    {/*                                <details className="mt-3">*/}
+                    {/*                                    <summary className="cursor-pointer text-xs text-muted-foreground">*/}
+                    {/*                                        상세 분석 데이터 보기*/}
+                    {/*                                    </summary>*/}
+                    {/*                                    {result.code && (*/}
+                    {/*                                        <BlueprintREPL*/}
+                    {/*                                            code={result.code.replace(/```javascript\s+([\s\S]+?)\s+```/g, '$1').trim()}*/}
+                    {/*                                            analysisData={result.data}*/}
+                    {/*                                            onExecutionComplete={() => {}}*/}
+                    {/*                                        />*/}
+                    {/*                                    )}*/}
+                    {/*                                </details>*/}
+                    {/*                            </div>*/}
+                    {/*                        ) : null}*/}
+                    {/*                    </div>*/}
+                    {/*                );*/}
+                    {/*            } else {*/}
+                    {/*                return (*/}
+                    {/*                    <div*/}
+                    {/*                        key={toolCallId}*/}
+                    {/*                        className={cx({*/}
+                    {/*                            skeleton: ['blueprintAction'].includes(toolName),*/}
+                    {/*                        })}*/}
+                    {/*                    >*/}
+                    {/*                        {toolName === 'blueprintAction' ? (*/}
+                    {/*                            <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-md animate-pulse">*/}
+                    {/*                                <p className="text-sm text-gray-500 dark:text-gray-400">*/}
+                    {/*                                    공간 분석 중...*/}
+                    {/*                                </p>*/}
+                    {/*                            </div>*/}
+                    {/*                        ) : null}*/}
+                    {/*                    </div>*/}
+                    {/*                );*/}
+                    {/*            }*/}
+                    {/*        })}*/}
+                    {/*    </div>*/}
+                    {/*)}*/}
 
 
                     {message.experimental_attachments && (

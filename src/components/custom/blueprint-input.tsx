@@ -6,7 +6,7 @@ import {
     Message
 } from 'ai';
 import cx from 'classnames';
-import { motion } from 'framer-motion';
+import {motion} from 'framer-motion';
 import React, {
     useRef,
     useEffect,
@@ -14,20 +14,20 @@ import React, {
     useMemo,
     useState
 } from 'react';
-import { toast } from 'sonner';
-import { useLocalStorage, useWindowSize } from 'usehooks-ts';
+import {toast} from 'sonner';
+import {useLocalStorage, useWindowSize} from 'usehooks-ts';
 
-import { useBlueprint } from '@/contexts/BlueprintContext';
+import {useBlueprint} from '@/contexts/BlueprintContext';
 import {
     getSimplifiedRoomInfo,
     diffSimplifiedRoomInfo
 } from '@/lib/blueprint/analysis';
-import { sanitizeUIMessages } from '@/lib/utils';
+import {sanitizeUIMessages} from '@/lib/utils';
 
-import { ArrowUpIcon, StopIcon } from './icons';
-import { Button } from '../ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Textarea } from '../ui/textarea';
+import {ArrowUpIcon, StopIcon} from './icons';
+import {Button} from '../ui/button';
+import {Card, CardContent, CardHeader, CardTitle} from '../ui/card';
+import {Textarea} from '../ui/textarea';
 
 
 const suggestedActions = [
@@ -105,8 +105,8 @@ export function BlueprintInput({
     className?: string;
 }) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const { width } = useWindowSize();
-    const { blueprintData, simplifiedRoomInfo, diff } = useBlueprint();
+    const {width} = useWindowSize();
+    const {blueprintData, simplifiedRoomInfo, diff} = useBlueprint();
     const [localStorageInput, setLocalStorageInput] = useLocalStorage('input', '');
 
     useEffect(() => {
@@ -122,11 +122,11 @@ export function BlueprintInput({
             const finalValue = domValue || localStorageInput || '';
             setInput(finalValue);
         }
-    }, []);
+    }, [localStorageInput, setInput]);
 
     useEffect(() => {
         setLocalStorageInput(input);
-    }, [input]);
+    }, [input, setLocalStorageInput]);
 
     const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setInput(event.target.value);
@@ -140,12 +140,12 @@ export function BlueprintInput({
         window.history.replaceState({}, '', `/chat/${chatId}`);
         const current = getSimplifiedRoomInfo(blueprintData);
         const currentDiff = diff || [];
-        handleSubmit(undefined, { body: { blueprint: current, diff: currentDiff } });
+        handleSubmit(undefined, {body: {blueprint: current, diff: currentDiff}});
         setLocalStorageInput('');
         if (width && width > 768) {
             textareaRef.current?.focus();
         }
-    }, [handleSubmit, blueprintData, width, chatId, diff]);
+    }, [handleSubmit, blueprintData, width, chatId, diff, setLocalStorageInput]);
 
     return (
         <div className="relative w-full flex flex-col gap-4">
@@ -188,10 +188,10 @@ export function BlueprintInput({
                 <div className="grid sm:grid-cols-2 gap-2 w-full">
                     {suggestedActions.map((suggestedAction, index) => (
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 20 }}
-                            transition={{ delay: 0.05 * index }}
+                            initial={{opacity: 0, y: 20}}
+                            animate={{opacity: 1, y: 0}}
+                            exit={{opacity: 0, y: 20}}
+                            transition={{delay: 0.05 * index}}
                             key={index}
                             className={index > 1 ? 'hidden sm:block' : 'block'}
                         >
@@ -200,7 +200,7 @@ export function BlueprintInput({
                                 onClick={() => {
                                     window.history.replaceState({}, '', `/chat/${chatId}`);
                                     append(
-                                        { role: 'user', content: suggestedAction.action },
+                                        {role: 'user', content: suggestedAction.action},
                                         {
                                             body: {
                                                 blueprint: simplifiedRoomInfo,
@@ -251,7 +251,7 @@ export function BlueprintInput({
                         setMessages((msgs) => sanitizeUIMessages(msgs));
                     }}
                 >
-                    <StopIcon size={14} />
+                    <StopIcon size={14}/>
                 </Button>
             ) : (
                 <Button
@@ -262,7 +262,7 @@ export function BlueprintInput({
                     }}
                     disabled={input.length === 0}
                 >
-                    <ArrowUpIcon size={14} />
+                    <ArrowUpIcon size={14}/>
                 </Button>
             )}
         </div>
