@@ -252,7 +252,21 @@ const ControlPanel = ({
                             <SelectValue placeholder="방 선택" />
                         </SelectTrigger>
                         <SelectContent>
-                            {['집안'].map((card) => (
+                            {[
+                                "거실",
+                                "안방",
+                                "주방",
+                                "화장실",
+                                "부엌",
+                                "아이방",
+                                "서재",
+                                "작은방",
+                                "손님방",
+                                "발코니",
+                                "현관",
+                                "창고",
+                                "드레스룸"
+                            ].map((card) => (
                                 <SelectItem key={card} value={card}>
                                     {card}
                                 </SelectItem>
