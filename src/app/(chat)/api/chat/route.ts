@@ -23,6 +23,7 @@ import { customModel } from '@/lib/ai';
 import { models } from '@/lib/ai/models';
 import {regularPrompt, systemPrompt} from '@/lib/ai/prompts';
 import { BlueprintAction } from '@/lib/blueprint'; // 중앙화된 모듈에서 가져옴
+import {RoomNetwork} from "@/lib/blueprint/analysis";
 import { createClient } from '@/lib/supabase/server';
 import { MessageRole } from '@/lib/supabase/types';
 import {
@@ -120,10 +121,13 @@ export async function POST(request: Request) {
     id,
     messages,
     modelId,
-    blueprint,
-      diff
-  }: { id: string; messages: Array<Message>; modelId: string; blueprint: any; diff: any } =
-      await request.json();
+    roomNetwork,
+  }: {
+    id: string;
+    messages: Array<Message>;
+    modelId: string;
+    roomNetwork: RoomNetwork
+  } = await request.json();
 
   const user = await getUser();
 
@@ -173,7 +177,9 @@ export async function POST(request: Request) {
 
     const result = await streamText({
       model: customModel(model.apiIdentifier),
-      system: blueprint ? `${systemPrompt}\n\nHere is spatial data: ${JSON.stringify(blueprint)} and this has went changed by user: ${JSON.stringify(diff)}` : systemPrompt,
+      system: roomNetwork
+          ? `${systemPrompt}\n\nHere is spatial data: ${JSON.stringify(roomNetwork)}`
+          : systemPrompt,
       messages: coreMessages,
       maxSteps: 5,
       // experimental_activeTools: allTools,

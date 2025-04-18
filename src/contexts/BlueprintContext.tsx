@@ -1,15 +1,15 @@
-"use client"
-import {createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef} from 'react';
+"use client";
 
-import {diffSimplifiedRoomInfo, getSimplifiedRoomInfo} from "@/lib/blueprint/analysis";
+import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
+
+import { buildRoomNetwork, RoomNetwork } from '@/lib/blueprint/analysis';
 import { EVENT_UPDATED, EVENT_NEW_ITEM, EVENT_ITEM_REMOVED } from '@/lib/blueprint/core/events';
 
-// 간소화된 Context 타입 정의
+// Context 타입 정의
 interface BlueprintContextType {
     blueprint: any | null;
     blueprintData: string;
-    simplifiedRoomInfo: any | null;
-    diff: any[] | null;
+    roomNetwork: RoomNetwork | null;
 
     addItem: (itemData: any) => void;
     setBlueprint: (instance: any) => void;
@@ -17,82 +17,59 @@ interface BlueprintContextType {
     saveBlueprintData: (chatId: string) => Promise<void>;
 }
 
-
 // 기본 Context 생성
 const BlueprintContext = createContext<BlueprintContextType>({
     blueprint: null,
     blueprintData: '',
-    simplifiedRoomInfo: null,
-    diff: [],
-
+    roomNetwork: null,
     addItem: () => {},
     setBlueprint: () => {},
     setBlueprintData: () => {},
     saveBlueprintData: async () => {},
 });
 
-// BlueprintProvider 컴포넌트
+// Provider 컴포넌트
 export const BlueprintProvider = ({ children }: { children: ReactNode }) => {
-    // 핵심 상태
     const [blueprint, setBlueprint] = useState<any | null>(null);
     const [blueprintData, setBlueprintData] = useState<string>('');
-    const [simplifiedRoomInfo, setSimplifiedRoomInfo] = useState<any | null>(null);
-    const [diff, setDiff] = useState<any[] | null>(null);
-    const previousSimplified = useRef<any | null>(null);
+    const [roomNetwork, setRoomNetwork] = useState<RoomNetwork | null>(null);
 
-    // Blueprint 모델이 변경될 때 데이터 업데이트
+    // Blueprint 모델 변화 시 네트워크 갱신
     useEffect(() => {
-        console.log("blueprint updated in Context!")
         if (!blueprint?.model) return;
-        console.log("blueprint updated in Context!2")
-        // 이벤트 핸들러 - 간소화된 버전
-        const handleModelUpdate = () => {
+
+        const updateNetwork = () => {
             try {
-                const serializedData = blueprint.model.exportFloorplan();
-                setBlueprintData(serializedData);
+                const raw = blueprint.model.exportFloorplan();
+                setBlueprintData(raw);
 
-                const simplified = getSimplifiedRoomInfo(serializedData);
-                setSimplifiedRoomInfo(simplified);
-
-                if (previousSimplified.current) {
-                    const delta = diffSimplifiedRoomInfo(
-                        previousSimplified.current.rooms,
-                        simplified.rooms
-                    );
-                    setDiff(delta.length > 0 ? delta : null);
-                } else {
-                    setDiff(null);
-                }
-
-                previousSimplified.current = simplified;
-
+                const network = buildRoomNetwork(raw);
+                setRoomNetwork(network);
             } catch (error) {
-                console.error('Blueprint 데이터 처리 오류:', error);
+                console.error('Blueprint 네트워크 생성 오류:', error);
             }
         };
 
-        console.log("blueprint updated in Context!3")
-        // 이벤트 리스너 등록
-        blueprint.model.addEventListener(EVENT_UPDATED, handleModelUpdate);
-        blueprint.model.addEventListener(EVENT_NEW_ITEM, handleModelUpdate);
-        blueprint.model.addEventListener(EVENT_ITEM_REMOVED, handleModelUpdate);
-        console.log("blueprint updated in Context!4")
+        blueprint.model.addEventListener(EVENT_UPDATED, updateNetwork);
+        blueprint.model.addEventListener(EVENT_NEW_ITEM, updateNetwork);
+        blueprint.model.addEventListener(EVENT_ITEM_REMOVED, updateNetwork);
+
+        // 초기 실행
+        updateNetwork();
 
         return () => {
-            // 이벤트 리스너 정리
-            blueprint.model.removeEventListener(EVENT_UPDATED, handleModelUpdate);
-            blueprint.model.removeEventListener(EVENT_NEW_ITEM, handleModelUpdate);
-            blueprint.model.removeEventListener(EVENT_ITEM_REMOVED, handleModelUpdate);
+            blueprint.model.removeEventListener(EVENT_UPDATED, updateNetwork);
+            blueprint.model.removeEventListener(EVENT_NEW_ITEM, updateNetwork);
+            blueprint.model.removeEventListener(EVENT_ITEM_REMOVED, updateNetwork);
         };
     }, [blueprint]);
 
-    // 물체 추가 함수
+    // 아이템 추가
     const addItem = useCallback((itemData: any) => {
         if (!blueprint?.model) {
-            console.error('Blueprint 모델이 초기화되지 않았습니다');
+            console.error('Blueprint 모델 미존재');
             return;
         }
-
         try {
             blueprint.model.addItemByMetaData(itemData);
         } catch (error) {
@@ -100,57 +77,37 @@ export const BlueprintProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [blueprint]);
 
-    // 데이터 저장 함수
+    // 데이터 저장
     const saveBlueprintData = useCallback(async (chatId: string) => {
         if (!blueprint?.model || !chatId) return;
-
         try {
-            const serializedData = blueprint.model.exportSerialized();
-
-            // 서버에 저장 - 오류 처리 추가
+            const serialized = blueprint.model.exportSerialized();
             const response = await fetch(`/api/floorplan?chatId=${chatId}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    serializedData,
-                    title: `Blueprint for chat ${chatId}`,
-                    metadata: { lastUpdated: new Date().toISOString() }
-                }),
+                body: JSON.stringify({ serializedData: serialized, title: `Blueprint for ${chatId}`, metadata: { lastUpdated: new Date().toISOString() } })
             });
-
-            // 응답이 성공적이지 않은 경우 오류 처리
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error('Blueprint 데이터 저장 응답 실패:', errorData);
-
-                // 필요한 경우 추가 조치
-                if (response.status === 500 && errorData.error?.includes('foreign key constraint')) {
-                    console.warn('채팅 ID가 존재하지 않아 평면도를 저장할 수 없습니다. 채팅을 먼저 생성해야 합니다.');
-                    // 여기서 사용자에게 알림을 표시하거나 추가 조치를 취할 수 있습니다
-                }
+                console.error('저장 오류:', errorData);
             }
         } catch (error) {
-            console.error('Blueprint 데이터 저장 실패:', error);
+            console.error('Blueprint 저장 실패:', error);
         }
     }, [blueprint]);
 
     // Context 값
-    const value = {
+    const value: BlueprintContextType = {
         blueprint,
         blueprintData,
-        simplifiedRoomInfo,
-        diff,
+        roomNetwork,
         addItem,
         setBlueprint,
         setBlueprintData,
         saveBlueprintData,
     };
 
-    return (
-        <BlueprintContext.Provider value={value}>
-            {children}
-        </BlueprintContext.Provider>
-    );
+    return <BlueprintContext.Provider value={value}>{children}</BlueprintContext.Provider>;
 };
 
 // 사용 훅

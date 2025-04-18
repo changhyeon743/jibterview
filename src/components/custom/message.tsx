@@ -25,8 +25,8 @@ export const PreviewMessage = ({
                                }: {
     chatId: string;
     message: Message;
-    block: any; // UIBlock 타입
-    setBlock: any; // Dispatch 함수
+    block: any | undefined; // UIBlock 타입
+    setBlock: any | undefined; // Dispatch 함수
     vote: Vote | undefined;
     isLoading: boolean;
 }) => {

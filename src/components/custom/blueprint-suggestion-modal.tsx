@@ -83,8 +83,9 @@ export function BlueprintSuggestionModal({
 
             // 가장 일치도가 높은 도면 자동 선택
             if (data.suggestions.length > 0) {
-                const bestMatch = data.suggestions.reduce((prev, current) =>
-                    (prev.matchScore > current.matchScore) ? prev : current
+                const bestMatch = data.suggestions.reduce(
+                    (prev: BlueprintSuggestion, current: BlueprintSuggestion) =>
+                        prev.matchScore > current.matchScore ? prev : current
                 );
                 setSelectedBlueprintId(bestMatch.id);
             }
