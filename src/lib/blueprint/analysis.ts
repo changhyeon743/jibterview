@@ -1,6 +1,7 @@
 import { Vector2 } from 'three';
 
-//@orchestra: 센티미터 단위의 아이템 좌표를 미터 단위로 변환하는 상수
+//@orchestra chat
+
 const ITEM_SCALE = 0.01;
 
 /* ────────────────────────────────────── */
