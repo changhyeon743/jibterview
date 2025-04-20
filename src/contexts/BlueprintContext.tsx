@@ -3,7 +3,17 @@
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 
 import { buildRoomNetwork, RoomNetwork } from '@/lib/blueprint/analysis';
-import { EVENT_UPDATED, EVENT_NEW_ITEM, EVENT_ITEM_REMOVED } from '@/lib/blueprint/core/events';
+import {
+    EVENT_UPDATED,
+    EVENT_NEW_ITEM,
+    EVENT_ITEM_REMOVED,
+    EVENT_ITEM_MOVE,
+    EVENT_ITEM_MOVE_FINISH,
+    EVENT_ITEM_ROTATED,
+    EVENT_NEW_ROOMS_ADDED,
+    EVENT_ROOM_NAME_CHANGED,
+    EVENT_ROOM_ATTRIBUTES_CHANGED, EVENT_WALLS_COMPLETED, EVENT_MOVED, EVENT_UPDATE_TEXTURES, EVENT_DELETED
+} from '@/lib/blueprint/core/events';
 
 // Context 타입 정의
 interface BlueprintContextType {
@@ -50,17 +60,31 @@ export const BlueprintProvider = ({ children }: { children: ReactNode }) => {
             }
         };
 
-        blueprint.model.addEventListener(EVENT_UPDATED, updateNetwork);
-        blueprint.model.addEventListener(EVENT_NEW_ITEM, updateNetwork);
-        blueprint.model.addEventListener(EVENT_ITEM_REMOVED, updateNetwork);
+        const updateEvents = [
+            EVENT_UPDATED,
+            EVENT_NEW_ITEM,
+            EVENT_ITEM_REMOVED,
+            EVENT_ITEM_MOVE,
+            EVENT_ITEM_MOVE_FINISH,
+            EVENT_ITEM_ROTATED,
+            EVENT_NEW_ROOMS_ADDED,
+            EVENT_ROOM_NAME_CHANGED,
+            EVENT_ROOM_ATTRIBUTES_CHANGED,
+            EVENT_MOVED,
+            EVENT_DELETED,
+        ];
+
+        updateEvents.forEach((event) => {
+            blueprint.model.addEventListener(event, updateNetwork);
+        });
 
         // 초기 실행
         updateNetwork();
 
         return () => {
-            blueprint.model.removeEventListener(EVENT_UPDATED, updateNetwork);
-            blueprint.model.removeEventListener(EVENT_NEW_ITEM, updateNetwork);
-            blueprint.model.removeEventListener(EVENT_ITEM_REMOVED, updateNetwork);
+            updateEvents.forEach((event) => {
+                blueprint.model.removeEventListener(event, updateNetwork);
+            });
         };
     }, [blueprint]);
 

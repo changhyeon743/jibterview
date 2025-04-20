@@ -206,7 +206,7 @@ export function BlueprintSuggestionModal({
                         variant="outline"
                         onClick={handleCreateNew}
                         className="min-w-24"
-                    >\
+                    >
                         새 도면 생성
                     </Button>
                     <div className="flex gap-2">

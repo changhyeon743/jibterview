@@ -40,7 +40,7 @@ export default function RoomNetworkGraph({ roomNetwork }: { roomNetwork: RoomNet
         node: {
             size: 200,
             fontSize: 8,
-            labelProperty: 'label',
+            labelProperty: (node: { id: string; label: string; color: string }) => node.label,
         },
         link: {
             highlightColor: '#aaa',

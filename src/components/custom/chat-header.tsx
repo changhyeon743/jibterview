@@ -37,7 +37,7 @@ export function ChatHeader({
                         }}
                     >
                         <PlusIcon />
-                        <span className="md:sr-only">New Chat</span>
+                        <span className="md:sr-only">새로운 채팅</span>
                     </Button>
                 </BetterTooltip>
             )}
