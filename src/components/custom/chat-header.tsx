@@ -2,7 +2,7 @@
 //@orchestra chat
 'use client';
 
-import { PlusIcon } from "lucide-react";
+import {Grid, PlusIcon} from "lucide-react";
 import { useRouter } from 'next/navigation';
 import { useWindowSize } from 'usehooks-ts';
 
@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { BetterTooltip } from '@/components/ui/tooltip';
 
 import { useSidebar } from '../ui/sidebar';
+import Link from "next/link";
 
 export function ChatHeader({
                                selectedModelId,
@@ -41,6 +42,17 @@ export function ChatHeader({
                     </Button>
                 </BetterTooltip>
             )}
+
+            <Link href="/library">
+                <Button
+                    variant={'outline'}
+                    className="w-full justify-start gap-2"
+                >
+                    <Grid size={16} />
+                    <span>도면 라이브러리</span>
+                </Button>
+            </Link>
+
             <ModelSelector
                 selectedModelId={selectedModelId}
                 className="order-1 md:order-2"

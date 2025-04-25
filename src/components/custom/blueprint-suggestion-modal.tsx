@@ -1,5 +1,6 @@
+// src/components/custom/blueprint-suggestion-modal.tsx
+
 'use client';
-//@orchestra chat
 
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -44,13 +45,14 @@ export function BlueprintSuggestionModal({
     const [suggestions, setSuggestions] = useState<BlueprintSuggestion[]>([]);
     const [selectedBlueprintId, setSelectedBlueprintId] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [retryCount, setRetryCount] = useState(0);
 
     useEffect(() => {
         // 모달이 열릴 때 도면 추천 요청
         if (isOpen && quantitativeFactors && !suggestions.length && !isLoading) {
             fetchBlueprintSuggestions();
         }
-    }, [isOpen, quantitativeFactors]);
+    }, [isOpen, quantitativeFactors, retryCount]);
 
     // 모달이 닫힐 때 상태 초기화
     useEffect(() => {
@@ -66,6 +68,8 @@ export function BlueprintSuggestionModal({
         setError(null);
 
         try {
+            console.log('요청하는 정량 요소:', quantitativeFactors);
+
             const response = await fetch('/api/blueprint-suggestions', {
                 method: 'POST',
                 headers: {
@@ -79,6 +83,8 @@ export function BlueprintSuggestionModal({
             }
 
             const data = await response.json();
+            console.log('받은 추천 데이터:', data);
+
             setSuggestions(data.suggestions);
 
             // 가장 일치도가 높은 도면 자동 선택
@@ -140,6 +146,9 @@ export function BlueprintSuggestionModal({
                 <div className="py-4">
                     {isLoading ? (
                         <div className="space-y-4">
+                            <div className="text-sm text-muted-foreground text-center mb-2">
+                                요청하신 조건에 맞는 도면을 검색 중입니다...
+                            </div>
                             <Skeleton className="h-24 w-full rounded-lg" />
                             <Skeleton className="h-24 w-full rounded-lg" />
                             <Skeleton className="h-24 w-full rounded-lg" />
@@ -151,7 +160,7 @@ export function BlueprintSuggestionModal({
                                 variant="outline"
                                 size="sm"
                                 className="mt-2 w-full"
-                                onClick={fetchBlueprintSuggestions}
+                                onClick={() => setRetryCount(prev => prev + 1)}
                             >
                                 다시 시도
                             </Button>
@@ -185,8 +194,8 @@ export function BlueprintSuggestionModal({
                                             <div className="flex justify-between">
                                                 <h3 className="font-medium text-sm">{suggestion.title}</h3>
                                                 <span className="text-xs px-2 py-0.5 bg-primary/20 text-primary rounded-full">
-                          일치도 {suggestion.matchScore}%
-                        </span>
+                                                    일치도 {suggestion.matchScore}%
+                                                </span>
                                             </div>
                                             <p className="text-sm text-muted-foreground mt-1">{suggestion.description}</p>
                                         </div>
