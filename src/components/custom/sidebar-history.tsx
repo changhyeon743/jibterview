@@ -37,6 +37,8 @@ import {
 import { getChatsByUserIdQuery } from '@/db/queries';
 import { createClient } from '@/lib/supabase/client';
 import { Database } from '@/lib/supabase/types';
+import {Button} from "@/components/ui/button";
+import {Grid} from "lucide-react";
 
 type Chat = Database['public']['Tables']['chats']['Row'];
 

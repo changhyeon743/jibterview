@@ -18,6 +18,8 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { BetterTooltip } from '@/components/ui/tooltip';
+import Link from "next/link";
+import {Grid} from "lucide-react";
 
 export function AppSidebar({ user }: { user: User | null }) {
   const router = useRouter();
@@ -58,6 +60,16 @@ export function AppSidebar({ user }: { user: User | null }) {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
+
+            <Link href="/library">
+                <Button
+                    variant={'outline'}
+                    className="w-full justify-start gap-2"
+                >
+                    <Grid size={16} />
+                    <span>도면 라이브러리</span>
+                </Button>
+            </Link>
           <SidebarHistory user={user ?? undefined} />
         </SidebarGroup>
       </SidebarContent>

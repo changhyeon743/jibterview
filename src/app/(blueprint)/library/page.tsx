@@ -3,6 +3,7 @@
 
 import LibraryContainer from '@/components/blueprint/library/LibraryContainer';
 import { getSession } from '@/db/cached-queries';
+import {SidebarToggle} from "@/components/custom/sidebar-toggle";
 
 export default async function LibraryPage() {
     const user = await getSession();
