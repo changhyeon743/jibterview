@@ -1,6 +1,8 @@
 'use client';
 
 import { User } from '@supabase/supabase-js';
+import {Grid} from "lucide-react";
+import Link from "next/link";
 import { useRouter } from 'next/navigation';
 
 import { PlusIcon } from '@/components/custom/icons';
@@ -18,8 +20,6 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { BetterTooltip } from '@/components/ui/tooltip';
-import Link from "next/link";
-import {Grid} from "lucide-react";
 
 export function AppSidebar({ user }: { user: User | null }) {
   const router = useRouter();

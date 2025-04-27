@@ -2,15 +2,16 @@
 // @orchestra blueprint
 
 import { NextResponse } from 'next/server';
+import { type NextRequest } from 'next/server';
 
 import { createClient } from '@/lib/supabase/server';
 
 export async function GET(
-    req: Request,
-    { params }: { params: { id: string } }
+    req: NextRequest,
+    context: any
 ) {
     try {
-        const id = params.id;
+        const id = context.params.id;
 
         if (!id) {
             return NextResponse.json({ error: '도면 ID가 필요합니다.' }, { status: 400 });
@@ -29,12 +30,11 @@ export async function GET(
         const { data, error } = await supabase
             .from('floorplan_library')
             .select(`
-        *,
-        floorplan_metrics!inner(*)
-      `)
+                *,
+                floorplan_metrics!inner(*)
+            `)
             .eq('id', id)
             .single();
-
 
         if (error) {
             console.error('도면 조회 오류:', error);

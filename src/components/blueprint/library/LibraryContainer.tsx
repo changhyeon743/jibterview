@@ -35,7 +35,7 @@ export interface LibraryItem {
         living_room_to_room_ratio: number;
         storage_count: number;
         veranda_count: number;
-    };
+    }[];
 }
 
 // 페이지네이션 메타데이터 인터페이스
@@ -186,7 +186,7 @@ export default function LibraryContainer({ userId }: LibraryContainerProps) {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="max-w-sm"
                     />
-                    {loading && <Skeleton className="h-9 w-9 rounded-md" />}
+                    {loading && <Skeleton className="size-9 rounded-md" />}
                 </div>
 
                 <BlueprintUploadModal />
@@ -197,7 +197,7 @@ export default function LibraryContainer({ userId }: LibraryContainerProps) {
                 <div className="space-y-3">
                     {Array.from({ length: 5 }).map((_, i) => (
                         <div key={i} className="flex items-center space-x-4">
-                            <Skeleton className="h-12 w-12" />
+                            <Skeleton className="size-12" />
                             <div className="space-y-2">
                                 <Skeleton className="h-4 w-[250px]" />
                                 <Skeleton className="h-4 w-[200px]" />
@@ -231,9 +231,11 @@ export default function LibraryContainer({ userId }: LibraryContainerProps) {
                     <PaginationContent>
                         <PaginationItem>
                             <PaginationPrevious
-                                onClick={() => handlePageChange(Math.max(1, pagination.page - 1))}
-                                disabled={pagination.page === 1}
+                                onClick={() => pagination.page > 1 && handlePageChange(pagination.page - 1)}
+                                className={pagination.page === 1 ? "pointer-events-none opacity-50" : ""}
+                                aria-disabled={pagination.page === 1}
                             />
+
                         </PaginationItem>
 
                         {/* 페이지 번호 */}
@@ -269,9 +271,11 @@ export default function LibraryContainer({ userId }: LibraryContainerProps) {
 
                         <PaginationItem>
                             <PaginationNext
-                                onClick={() => handlePageChange(Math.min(pagination.totalPages, pagination.page + 1))}
-                                disabled={pagination.page === pagination.totalPages}
+                                onClick={() => pagination.page < pagination.totalPages && handlePageChange(pagination.page + 1)}
+                                className={pagination.page === pagination.totalPages ? "pointer-events-none opacity-50" : ""}
+                                aria-disabled={pagination.page === pagination.totalPages}
                             />
+
                         </PaginationItem>
                     </PaginationContent>
                 </Pagination>

@@ -153,7 +153,7 @@ function FileListItem({
     return (
         <div className="flex items-center justify-between bg-muted p-3 rounded-md">
             <div className="flex items-center gap-3 flex-1">
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                     {statusIcons[item.status]}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -193,7 +193,7 @@ function FileListItem({
                     size="icon"
                     onClick={onRemove}
                     disabled={item.status === 'uploading' || item.status === 'analyzing'}
-                    className="h-8 w-8"
+                    className="size-8"
                 >
                     <TrashIcon className="size-4 text-muted-foreground hover:text-destructive" />
                 </Button>

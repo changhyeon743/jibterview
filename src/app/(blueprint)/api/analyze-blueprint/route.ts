@@ -1,6 +1,7 @@
 // src/app/api/analyze-blueprint/route.ts
 
 import { NextResponse } from 'next/server';
+
 import { QuantitativeFactor } from '@/components/custom/quantitative-factor-modal';
 import { createClient } from '@/lib/supabase/server';
 

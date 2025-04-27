@@ -2,6 +2,7 @@
 
 import { User } from '@supabase/supabase-js';
 import { isToday, isYesterday, subMonths, subWeeks } from 'date-fns';
+import {Grid} from "lucide-react";
 import Link from 'next/link';
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -19,6 +20,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import {Button} from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,8 +39,6 @@ import {
 import { getChatsByUserIdQuery } from '@/db/queries';
 import { createClient } from '@/lib/supabase/client';
 import { Database } from '@/lib/supabase/types';
-import {Button} from "@/components/ui/button";
-import {Grid} from "lucide-react";
 
 type Chat = Database['public']['Tables']['chats']['Row'];
 
