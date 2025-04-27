@@ -7,8 +7,8 @@ import './globals.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://chat.vercel.ai'),
-  title: '공간에 대해 상상하기',
-  description: '공간에 대해 상상하기',
+  title: '나의 공간',
+  description: '나의 공간',
 };
 
 export const viewport = {
