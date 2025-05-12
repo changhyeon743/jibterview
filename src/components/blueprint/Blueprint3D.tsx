@@ -17,16 +17,12 @@ import { useItemManagement } from "./hooks/useItemManagement";
 import { useItemSelection } from "./hooks/useItemSelection";
 import { useRoomSelection } from "./hooks/useRoomSelection";
 
-interface Blueprint3DProps {
-    initialData?: string;
-}
-
-export default function Blueprint3D({ initialData }: Blueprint3DProps) {
+export default function Blueprint3D() {
     // Blueprint Context
     const { blueprint, saveBlueprintData } = useBlueprint();
 
     // 필요한 훅 사용
-    const { containerRef } = useBlueprintSetup(initialData);
+    const { containerRef } = useBlueprintSetup();
     const { selectedItem, setSelectedItem, deleteItem } = useItemSelection(blueprint);
     const { selectedRoom, roomName, setRoomName } = useRoomSelection(blueprint);
     const { items, addItem } = useItemManagement();

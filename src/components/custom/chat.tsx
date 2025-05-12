@@ -40,7 +40,7 @@ export function Chat({
     const {mutate} = useSWRConfig();
 
     // 간소화된 BlueprintContext 사용
-    const {blueprint, blueprintData, roomNetwork} = useBlueprint();
+    const {roomNetwork} = useBlueprint();
 
     // Chat 상태 관리
     const {
@@ -70,14 +70,12 @@ export function Chat({
         <div className='h-dvh flex flex-col'>
             <ChatHeader selectedModelId={selectedModelId}/>
 
-            {!hasMessages &&
-                (<Overview/>)}
             <div className="flex flex-row h-[94svh]">
                 {/* 채팅 영역 */}
                 <div
                     className={cn(
                         "flex flex-col min-w-0 h-full bg-background border-r transition-all duration-500",
-                        hasMessages ? "w-1/3" : "w-full"
+                        "w-1/3"
                     )}
                 >
                     <div
@@ -103,36 +101,38 @@ export function Chat({
                         <div ref={messagesEndRef} className="shrink-0 min-w-[24px] min-h-[24px]"/>
                     </div>
 
-                    <form className="flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full" onSubmit={handleSubmit}>
-                        <BlueprintInput
-                            chatId={id}
-                            input={input}
-                            setInput={setInput}
-                            handleSubmit={handleSubmit}
-                            isLoading={isLoading}
-                            stop={stop}
-                            messages={messages}
-                            setMessages={setMessages}
-                            append={append}
-                        />
+                    <form
+                        className="flex-1 px-4 bg-background pb-4 md:pb-6 gap-2 w-full"
+                        onSubmit={handleSubmit}
+                    >
+                        <div className='outline rounded outline-[1px] outline-gray-400 p-4'>
+                            {!hasMessages && <Overview />}
+
+                            <BlueprintInput
+                                chatId={id}
+                                input={input}
+                                setInput={setInput}
+                                handleSubmit={handleSubmit}
+                                isLoading={isLoading}
+                                stop={stop}
+                                messages={messages}
+                                setMessages={setMessages}
+                                append={append}
+                            />
+                        </div>
+
                     </form>
                 </div>
 
                 {/* Blueprint 영역 - 메시지가 있을 때만 표시 */}
-                <AnimatePresence>
-                    {hasMessages && (
-                        <motion.div
-                            key="blueprint"
-                            className="w-2/3 h-full"
-                            initial={{x: '100%', opacity: 0}}
-                            animate={{x: 0, opacity: 1}}
-                            exit={{x: '100%', opacity: 0}}
-                            transition={{type: 'spring', stiffness: 100, damping: 20}}
-                        >
-                            <DynamicBlueprint initialData={blueprintData}/>
-                        </motion.div>
+                <div
+                    className={cn(
+                        "h-full transition-all duration-500",
+                        "w-2/3"
                     )}
-                </AnimatePresence>
+                >
+                    <DynamicBlueprint/>
+                </div>
             </div>
         </div>
     );

@@ -13,18 +13,18 @@ import React, {
     useCallback,
     useState
 } from 'react';
-import { toast } from 'sonner';
-import { useLocalStorage } from 'usehooks-ts';
+import {toast} from 'sonner';
+import {useLocalStorage} from 'usehooks-ts';
 
-import { BlueprintAnalysisVisualizer } from '@/components/custom/blueprint-analysis-visualizer';
-import { BlueprintSuggestion, BlueprintSuggestionModal } from '@/components/custom/blueprint-suggestion-modal';
-import { QuantitativeFactor, QuantitativeFactorModal } from '@/components/custom/quantitative-factor-modal';
-import { ScenarioSuggestions } from '@/components/custom/scenario-suggestion';
-import { useBlueprint } from '@/contexts/BlueprintContext';
+import {BlueprintAnalysisVisualizer} from '@/components/custom/blueprint-analysis-visualizer';
+import {BlueprintSuggestion, BlueprintSuggestionModal} from '@/components/custom/blueprint-suggestion-modal';
+import {QuantitativeFactor, QuantitativeFactorModal} from '@/components/custom/quantitative-factor-modal';
+import {ScenarioSuggestions} from '@/components/custom/scenario-suggestion';
+import {useBlueprint} from '@/contexts/BlueprintContext';
 
-import { ArrowUpIcon, StopIcon } from './icons';
-import { Button } from '../ui/button';
-import { Textarea } from '../ui/textarea';
+import {ArrowUpIcon, StopIcon} from './icons';
+import {Button} from '../ui/button';
+import {Textarea} from '../ui/textarea';
 
 export function BlueprintInput({
                                    chatId,
@@ -56,7 +56,7 @@ export function BlueprintInput({
     className?: string;
 }) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const { roomNetwork, saveBlueprintData } = useBlueprint();
+    const {roomNetwork, setBlueprintData} = useBlueprint();
     const [localStorageInput, setLocalStorageInput] = useLocalStorage('input', '');
 
     const [isQuantitativeFactorModalOpen, setIsQuantitativeFactorModalOpen] = useState(false);
@@ -90,8 +90,8 @@ export function BlueprintInput({
             textareaRef.current.style.height = `${textareaRef.current.scrollHeight + 2}px`;
         }
     };
-
-    // 입력값 기반으로 시나리오 저장 후 모달 오픈
+    //
+    // // 입력값 기반으로 시나리오 저장 후 모달 오픈
     const submitForm = useCallback((scenarioText?: string) => {
         const scenario = scenarioText || input.trim();
         if (!scenario) {
@@ -115,12 +115,13 @@ export function BlueprintInput({
                 toast.error('도면 데이터를 불러올 수 없습니다.');
                 return;
             }
-            await saveBlueprintData(suggestion.serializedData);
+            await setBlueprintData(suggestion.serializedData);
             window.history.replaceState({}, '', `/chat/${chatId}`);
+
 
             // GPT에 roomNetwork 및 quantitativeFactors 전달
             await append(
-                { role: 'user', content: userScenario },
+                {role: 'user', content: userScenario},
                 {
                     body: {
                         roomNetwork
@@ -165,13 +166,16 @@ export function BlueprintInput({
 
             {/* 공간 네트워크 시각화 및 요약 - 대화가 시작된 후에만 표시 */}
             {showAnalysis && (
-                <BlueprintAnalysisVisualizer roomNetwork={roomNetwork} />
+                <BlueprintAnalysisVisualizer roomNetwork={roomNetwork}/>
             )}
 
             {/* 추천 시나리오 - 새 채팅일 때만 표시 */}
             {isNewChat && (
-                <ScenarioSuggestions onSelectScenario={submitForm} />
-            )}
+                <Button onClick={() => {
+                    setIsQuantitativeFactorModalOpen(true);
+                }} variant='outline'>
+                    시작하기
+                </Button>)}
 
             <Textarea
                 ref={textareaRef}

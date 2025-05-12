@@ -1,10 +1,10 @@
 'use client';
 //@orchestra chat
 
-import { useEffect, useState, useRef } from 'react';
-import { toast } from 'sonner';
+import React, {useEffect, useState, useRef} from 'react';
+import {toast} from 'sonner';
 
-import { Button } from '@/components/ui/button';
+import {Button} from '@/components/ui/button';
 import {
     Dialog,
     DialogContent,
@@ -13,8 +13,9 @@ import {
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Textarea } from '@/components/ui/textarea';
+import {Skeleton} from '@/components/ui/skeleton';
+import {Textarea} from '@/components/ui/textarea';
+import {ScenarioSuggestions} from "@/components/custom/scenario-suggestion";
 
 export interface QuantitativeFactor {
     totalArea: number;
@@ -69,8 +70,8 @@ export function QuantitativeFactorModal({
         try {
             const res = await fetch('/api/quantitative-factors', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ scenario: scenarioText }),
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({scenario: scenarioText}),
             });
 
             if (!res.ok) throw new Error('분석 요청 실패');
@@ -98,11 +99,16 @@ export function QuantitativeFactorModal({
                 <DialogHeader>
                     <DialogTitle>공간 요구 시나리오 분석</DialogTitle>
                     <DialogDescription>
-                        공간에 대한 요구사항을 자유롭게 작성해 주세요.
+                        공간에 대한 요구사항을 자유롭게 작성해 주세요. 꼭 맞는 평면도를 찾아드릴게요.
                     </DialogDescription>
                 </DialogHeader>
 
                 <div className="py-4 space-y-4">
+                    {!factors &&
+                        <ScenarioSuggestions onSelectScenario={setScenarioText}/>
+                    }
+
+
                     {/* 시나리오 입력 */}
                     <Textarea
                         value={scenarioText}
@@ -124,7 +130,7 @@ export function QuantitativeFactorModal({
                     {/* 로딩 시 */}
                     {isLoading && (
                         <div className="space-y-2">
-                            {[...Array(6)].map((_, i) => <Skeleton key={i} className="h-4 w-full" />)}
+                            {[...Array(6)].map((_, i) => <Skeleton key={i} className="h-4 w-full"/>)}
                         </div>
                     )}
 

@@ -1,5 +1,6 @@
 // src/components/blueprint/hooks/useBlueprintSetup.ts
-import { useEffect, useRef } from "react";
+//@orchestra blueprint
+import { useEffect, useRef, useLayoutEffect } from "react";
 
 import { useBlueprint } from "@/contexts/BlueprintContext";
 import { BlueprintJS } from "@/lib/blueprint/blueprint";
@@ -7,36 +8,35 @@ import { BlueprintJS } from "@/lib/blueprint/blueprint";
 import { BLUEPRINT_OPTIONS } from "../constants";
 import * as defaultRoomJson from "../empty.json";
 
-export function useBlueprintSetup(initialData?: string) {
+export function useBlueprintSetup() {
   // DOM 참조
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Context에서 필요한 상태와 함수만 가져옴
-  const { blueprint, setBlueprint, setBlueprintData } = useBlueprint();
+  const { blueprint, setBlueprint, blueprintData, setBlueprintData } = useBlueprint();
 
   const isInitializedRef = useRef(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isInitializedRef.current) return;
+    if (!containerRef.current || blueprint) return;
     isInitializedRef.current = true;
 
-    if (containerRef.current && !blueprint) {
-      const bp = new BlueprintJS(BLUEPRINT_OPTIONS as any);
+    const bp = new BlueprintJS(BLUEPRINT_OPTIONS as any);
+    const defaultData = JSON.stringify(defaultRoomJson);
+    setBlueprintData(defaultData);
+    setBlueprint(bp);
+  }, [containerRef, blueprint, setBlueprint, setBlueprintData]);
 
+  useEffect(() => {
+    if (blueprint && blueprintData && Object.keys(blueprintData).length > 0) {
       try {
-        const dataToLoad = initialData || JSON.stringify(defaultRoomJson);
-        bp.model.loadSerialized(dataToLoad);
-        setBlueprintData(dataToLoad);
+        blueprint.model.loadSerialized(blueprintData);
       } catch (error) {
-        const defaultData = JSON.stringify(defaultRoomJson);
-        bp.model.loadSerialized(defaultData);
-        setBlueprintData(defaultData);
+        console.error("Failed to load blueprintData:", JSON.stringify(error));
       }
-
-      setBlueprint(bp);
     }
-  }, [initialData, blueprint, setBlueprint, setBlueprintData]);
-
+  }, [blueprintData, blueprint]);
 
   return { containerRef };
 }
