@@ -4,6 +4,7 @@
 import React, {useEffect, useState, useRef} from 'react';
 import {toast} from 'sonner';
 
+import {ScenarioSuggestions} from "@/components/custom/scenario-suggestion";
 import {Button} from '@/components/ui/button';
 import {
     Dialog,
@@ -15,7 +16,6 @@ import {
 } from '@/components/ui/dialog';
 import {Skeleton} from '@/components/ui/skeleton';
 import {Textarea} from '@/components/ui/textarea';
-import {ScenarioSuggestions} from "@/components/custom/scenario-suggestion";
 
 export interface QuantitativeFactor {
     totalArea: number;
