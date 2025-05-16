@@ -2,6 +2,7 @@
 
 import {CubeIcon} from "@radix-ui/react-icons";
 import {motion} from 'framer-motion';
+import {HouseIcon} from "lucide-react";
 
 export const Overview = () => {
     return (
@@ -16,8 +17,8 @@ export const Overview = () => {
             <div
                 className="rounded-xl p-6 flex flex-col gap-2 leading-relaxed text-center max-w-3xl text-gray-900">
                 <p className="text-xl font-bold text-foreground flex flex-col gap-0">
-                    <CubeIcon className='size-8 mx-auto'/>
-                    <span className='text-[15.5px]'>myspatial</span>
+                    <HouseIcon className='size-8 mx-auto'/>
+                    <span className='text-[15.5px]'>집터뷰</span>
                 </p>
 
                 <p>

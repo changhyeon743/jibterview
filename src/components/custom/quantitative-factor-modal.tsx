@@ -97,9 +97,9 @@ export function QuantitativeFactorModal({
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>공간 요구 시나리오 분석</DialogTitle>
+                    <DialogTitle>집터뷰 시작하기</DialogTitle>
                     <DialogDescription>
-                        공간에 대한 요구사항을 자유롭게 작성해 주세요. 꼭 맞는 평면도를 찾아드릴게요.
+                        당신이 원하는 주거공간에 대한 요구사항을 자유롭게 작성해 주세요. 꼭 맞는 평면도를 찾아드릴게요.
                     </DialogDescription>
                 </DialogHeader>
 
