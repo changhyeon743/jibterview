@@ -1,7 +1,7 @@
 # 사용자 참여적 디자인을 지원하기 위한 대화 기반 시스템 프로토타입 개발
 
 ![Space Interpreter](https://img.shields.io/badge/Space-Interpreter-blue)
-![Next.js 14](https://img.shields.io/badge/Next.js-14.0-black)
+![Next.js 15](https://img.shields.io/badge/Next.js-15.0-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
 ![Supabase](https://img.shields.io/badge/Supabase-Database-green)
 ![Three.js](https://img.shields.io/badge/Three.js-3D%20Rendering-orange)
@@ -31,7 +31,7 @@
 
 ## 기술 스택
 
-- **프론트엔드**: Next.js 14, React, TypeScript, TailwindCSS, shadcn/ui
+- **프론트엔드**: Next.js 15, React, TypeScript, TailwindCSS, shadcn/ui
 - **3D 시각화**: Three.js
 - **LLM 통합**: AI SDK, Claude/GPT API
 - **데이터베이스**: Supabase
